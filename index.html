@@ -212,38 +212,65 @@
             background: white; border-radius: 12px; max-width: 400px; width: 100%; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
         }
 
-        /* NEW EMBEDDED SCROLLING NOTICE STYLES */
-        .admin-notice-box {
+        /* EMBEDDED WIDE NOTICE STYLES */
+        .admin-notice-box-wide {
             width: 100%;
-            height: 50px;
+            max-width: 800px;
+            margin: 5px auto;
+            height: 80px;
             overflow: hidden;
-            background-color: #1e1e1e;
-            border: 1px solid #333;
-            padding: 5px 10px;
+            background-color: #121212;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 10px;
             box-sizing: border-box;
-            position: relative;
-            border-radius: 4px;
-            margin-top: 5px;
         }
-        .marquee-vertical {
+        .marquee-vertical-container {
             display: flex;
             flex-direction: column;
-            animation: scrollUpText 12s linear infinite;
+            animation: scrollUpContinuous 14s linear infinite;
         }
-        .marquee-vertical p {
-            margin: 0;
-            padding: 5px 0;
+        .marquee-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .marquee-item p {
+            margin: 5px 0;
             color: #4caf50;
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-family: sans-serif;
         }
-        @keyframes scrollUpText {
-            0% { transform: translateY(100%); }
+        .marquee-item img {
+            max-height: 40px;
+            width: auto;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+        @keyframes scrollUpContinuous {
+            0% { transform: translateY(80px); }
             100% { transform: translateY(-100%); }
+        }
+
+        /* Dynamically Injected Local Dashboard Box Styling */
+        #localUpdatePanel {
+            background: #1e1e1e;
+            border: 2px dashed #4caf50;
+            padding: 20px;
+            margin: 25px auto;
+            max-width: 630px;
+            border-radius: 8px;
+            font-family: sans-serif;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         @media print {
             body { background: white; color: black; }
-            .card, header, button, input, select, label, .notification-hub-grid, .floating-media-trigger, .floating-media-window, .floating-gear-trigger { display: none !important; }
+            .card, header, button, input, select, label, .notification-hub-grid, .floating-media-trigger, .floating-media-window, .floating-gear-trigger, #localUpdatePanel { display: none !important; }
         }
     </style>
 </head>
@@ -298,11 +325,11 @@
             </div>
             
             <div id="hubAdminPanel" class="hub-banner hub-admin" style="padding: 5px; background: none; border: none;">
-                <div class="admin-notice-box">
-                    <div class="marquee-vertical">
-                        <p>⚠️ ADMIN NOTICE: Welcome to the SO Biz Engine Marketplace!</p>
-                        <p>🔔 Staff Panel Gateway is fully operational.</p>
-                        <p>💼 Partner inventory updates are now sync'd live.</p>
+                <div class="admin-notice-box-wide">
+                    <div class="marquee-vertical-container" id="noticeMarqueeContainer">
+                        <div class="marquee-item">
+                            <p>⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Partners active.</p>
+                        </div>
                     </div>
                 </div>
                 <div id="hubAdminText" class="hidden"></div>
@@ -563,5 +590,49 @@
     </div>
 
     <script src="app.js"></script>
+
+    <script>
+        if (window.location.hostname === "localhost" || window.location.protocol === "file:") {
+            document.body.insertAdjacentHTML('beforeend', `
+                <div id="localUpdatePanel" style="display: block;">
+                    <h3 style="color: #4caf50; margin-top:0;">Local Update Dashboard</h3>
+                    <p style="font-size: 0.85rem; color: #aaa;">Type your changes below instead of editing raw code links.</p>
+                    
+                    <label style="display:block; margin: 10px 0 5px;">Daily Notice Text:</label>
+                    <input type="text" id="newNoticeText" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #553;" placeholder="e.g., Shift changed to morning routine...">
+                    
+                    <label style="display:block; margin: 10px 0 5px;">Image or GIF File Name (Optional):</label>
+                    <input type="text" id="newNoticeImage" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #553;" placeholder="e.g., banner.gif or product.jpg">
+                    
+                    <button id="applyNoticeBtn" style="margin-top:15px; background:#4caf50; color:white; border:none; padding:10px 15px; cursor:pointer; border-radius:4px; font-weight:bold;">
+                        Update Local Display
+                    </button>
+                    <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">*After updating, save your text changes and push via terminal to publish live.</p>
+                </div>
+            `);
+
+            document.getElementById('applyNoticeBtn').addEventListener('click', () => {
+                const textValue = document.getElementById('newNoticeText').value;
+                const imgValue = document.getElementById('newNoticeImage').value;
+                const container = document.getElementById('noticeMarqueeContainer');
+                
+                if(!textValue) {
+                    alert("Please type a notice message first!");
+                    return;
+                }
+
+                let imageHTML = imgValue ? `<img src="${imgValue}" alt="Notice Asset">` : '';
+                
+                container.innerHTML = `
+                    <div class="marquee-item">
+                        <p>⚠️ ${textValue}</p>
+                        ${imageHTML}
+                    </div>
+                `;
+                
+                alert("Display updated! Save your changes in your browser/editor and run your push commands.");
+            });
+        }
+    </script>
 </body>
 </html>
