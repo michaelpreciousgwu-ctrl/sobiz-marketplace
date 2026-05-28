@@ -1,0 +1,104 @@
+{
+  "partner": "Supermarket",
+  "inventory": [
+    {
+      "partnerId": "Supermarket",
+      "name": "Note book ",
+      "qty": 7,
+      "cost": 200,
+      "retail": 0,
+      "minAlert": 3,
+      "memo": ""
+    },
+    {
+      "partnerId": "Supermarket",
+      "name": "olive oil ",
+      "qty": 50,
+      "cost": 1000,
+      "retail": 0,
+      "minAlert": 3,
+      "memo": ""
+    },
+    {
+      "partnerId": "Supermarket",
+      "name": "paint ",
+      "qty": 3,
+      "cost": 150,
+      "retail": 0,
+      "minAlert": 3,
+      "memo": ""
+    },
+    {
+      "partnerId": "Supermarket",
+      "name": "woman",
+      "qty": 15,
+      "cost": 20,
+      "retail": 0,
+      "minAlert": 3,
+      "memo": ""
+    },
+    {
+      "partnerId": "Supermarket",
+      "name": "better malt",
+      "qty": 50,
+      "cost": 120,
+      "retail": 0,
+      "minAlert": 3,
+      "memo": ""
+    },
+    {
+      "partnerId": "Supermarket",
+      "name": "better malt ",
+      "qty": 5,
+      "cost": 120,
+      "retail": 0,
+      "minAlert": 3,
+      "memo": ""
+    }
+  ],
+  "ledger": [
+    {
+      "name": "Bella",
+      "amount": 60,
+      "dueDate": "2026-05-23",
+      "type": "TheyOwe"
+    }
+  ],
+  "sales": [
+    {
+      "date": "2026-05-10",
+      "name": "Sample Item",
+      "qty": 2,
+      "cost": 40,
+      "retail": 55
+    },
+    {
+      "date": "2026-05-15",
+      "name": "Sample Item",
+      "qty": 1,
+      "cost": 40,
+      "retail": 55
+    },
+    {
+      "date": "2026-05-22",
+      "name": "Sample Item",
+      "qty": 4,
+      "cost": 10,
+      "retail": 15
+    },
+    {
+      "date": "2026-05-22",
+      "name": "Note book ",
+      "qty": 10,
+      "cost": 200,
+      "retail": 0
+    },
+    {
+      "date": "2026-05-22",
+      "name": "paint ",
+      "qty": 12,
+      "cost": 150,
+      "retail": 0
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "SO Biz Smart Enterprise Engine",
+  "short_name": "SO Biz",
+  "description": "Multi-tier retail marketplace, stock manager, and live bookkeeping ledger engine.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-192-maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshots/mobile-catalog.png",
+      "sizes": "1080x2400",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "SO Biz Public Customer Marketplace"
+    }
+  ]
+}
