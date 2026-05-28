@@ -267,10 +267,49 @@
                 <div class="hub-banner-title">⚠️ Stock Alerts</div>
                 <div id="hubSystemText" style="font-size: 0.85rem;">All stock metrics stable.</div>
             </div>
-            <div id="hubAdminPanel" class="hub-banner hub-admin">
-                <div class="hub-banner-title">📢 Admin Notice</div>
-                <div id="hubAdminText" style="font-size: 0.85rem;">Standby for network baseline notes...</div>
-            </div>
+            <div class="admin-notice-box">
+    <div class="marquee-vertical">
+        <p>⚠️ ADMIN NOTICE: Welcome to the SO Biz Engine Marketplace!</p>
+        <p>🔔 Staff Panel Gateway is fully operational.</p>
+        <p>💼 Partner inventory updates are now sync'd live.</p>
+    </div>
+</div>
+
+<style>
+.admin-notice-box {
+    width: 100%;
+    height: 50px; /* Controls how tall the display box is */
+    overflow: hidden; /* Keeps the text inside the box boundaries */
+    background-color: #1e1e1e; /* Matches your dark workspace */
+    border: 1px solid #333;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.marquee-vertical {
+    display: flex;
+    flex-direction: column;
+    animation: scrollUpText 12s linear infinite; /* Runs forever without stopping */
+}
+
+.marquee-vertical p {
+    margin: 0;
+    padding: 5px 0;
+    color: #4caf50; /* Green theme text */
+    font-size: 0.9rem;
+}
+
+/* The continuous upward loop logic */
+@keyframes scrollUpText {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(-100%);
+    }
+}
+</style>
         </div>
 
         <div id="workspace" class="hidden">
