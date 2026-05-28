@@ -255,19 +255,6 @@
             100% { transform: translateY(-100%); }
         }
 
-        /* Dynamically Injected Local Dashboard Box Styling */
-        #localUpdatePanel {
-            background: #1e1e1e;
-            border: 2px dashed #4caf50;
-            padding: 20px;
-            margin: 25px auto;
-            max-width: 630px;
-            border-radius: 8px;
-            font-family: sans-serif;
-            color: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
         @media print {
             body { background: white; color: black; }
             .card, header, button, input, select, label, .notification-hub-grid, .floating-media-trigger, .floating-media-window, .floating-gear-trigger, #localUpdatePanel { display: none !important; }
@@ -328,8 +315,9 @@
                 <div class="admin-notice-box-wide">
                     <div class="marquee-vertical-container" id="noticeMarqueeContainer">
                         <div class="marquee-item">
-                            <p>⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Partners active.</p>
-                        </div>
+    <p>⚠️ <strong>DAILY ROUTINE:</strong> Hey</p>
+    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDB5Y21wczVyeTRkeW05NTlvMXM4d29qY2l1ZDBtZzJhbHkxYzA5OSZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/fUQ4rhUZJYiQsas6WD/200.webp" alt="Notice Update Asset">
+</div>
                     </div>
                 </div>
                 <div id="hubAdminText" class="hidden"></div>
@@ -592,45 +580,48 @@
     <script src="app.js"></script>
 
     <script>
+        // Automatically detect if you are opening this file on your local computer
         if (window.location.hostname === "localhost" || window.location.protocol === "file:") {
+            // Inject the updated button panel dynamically at the bottom of the page
             document.body.insertAdjacentHTML('beforeend', `
-                <div id="localUpdatePanel" style="display: block;">
+                <div id="localUpdatePanel" style="display: block; background: #1e1e1e; border: 2px dashed #4caf50; padding: 20px; margin: 40px auto; max-width: 600px; border-radius: 8px; font-family: sans-serif; color: white;">
                     <h3 style="color: #4caf50; margin-top:0;">Local Update Dashboard</h3>
-                    <p style="font-size: 0.85rem; color: #aaa;">Type your changes below instead of editing raw code links.</p>
+                    <p style="font-size: 0.85rem; color: #aaa;">Type your daily routine updates below.</p>
                     
                     <label style="display:block; margin: 10px 0 5px;">Daily Notice Text:</label>
-                    <input type="text" id="newNoticeText" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #553;" placeholder="e.g., Shift changed to morning routine...">
+                    <input type="text" id="newNoticeText" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #555; border-radius:4px;" placeholder="e.g., System sync complete. Partners active.">
                     
-                    <label style="display:block; margin: 10px 0 5px;">Image or GIF File Name (Optional):</label>
-                    <input type="text" id="newNoticeImage" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #553;" placeholder="e.g., banner.gif or product.jpg">
+                    <label style="display:block; margin: 10px 0 5px;">GIF or Image File Name (with extension like .gif):</label>
+                    <input type="text" id="newNoticeGIF" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #555; border-radius:4px;" placeholder="e.g., update-animation.gif">
                     
-                    <button id="applyNoticeBtn" style="margin-top:15px; background:#4caf50; color:white; border:none; padding:10px 15px; cursor:pointer; border-radius:4px; font-weight:bold;">
-                        Update Local Display
+                    <button id="applyNoticeBtn" style="margin-top:15px; background:#4caf50; color:white; border:none; padding:10px 15px; cursor:pointer; border-radius:4px; font-weight:bold; width:100%;">
+                        Generate Update Code
                     </button>
-                    <p style="font-size: 0.8rem; color: #888; margin-top: 10px;">*After updating, save your text changes and push via terminal to publish live.</p>
+                    
+                    <div id="codeOutputArea" style="display:none; margin-top:15px;">
+                        <label style="display:block; margin: 10px 0 5px; color: #ffeb3b;">Copy this code block:</label>
+                        <textarea id="generatedCodeBox" style="width:100%; height:80px; background:#000; color:#4caf50; font-family:monospace; padding:8px; border:1px solid #4caf50;" readonly></textarea>
+                        <p style="font-size: 0.8rem; color: #aaa; margin-top:5px;">👉 Paste this into your Notepad file right inside the <code>&lt;div class="marquee-vertical-container" id="noticeMarqueeContainer"&gt;</code> block, save the file, and push!</p>
+                    </div>
                 </div>
             `);
 
+            // Logic to generate the raw code for you to paste
             document.getElementById('applyNoticeBtn').addEventListener('click', () => {
-                const textValue = document.getElementById('newNoticeText').value;
-                const imgValue = document.getElementById('newNoticeImage').value;
-                const container = document.getElementById('noticeMarqueeContainer');
+                const textValue = document.getElementById('newNoticeText').value || "System sync complete. Partners active.";
+                const gifValue = document.getElementById('newNoticeGIF').value;
                 
-                if(!textValue) {
-                    alert("Please type a notice message first!");
-                    return;
-                }
-
-                let imageHTML = imgValue ? `<img src="${imgValue}" alt="Notice Asset">` : '';
+                let gifHTML = gifValue ? `<img src="${gifValue}" alt="Notice Update Asset">` : '';
                 
-                container.innerHTML = `
-                    <div class="marquee-item">
-                        <p>⚠️ ${textValue}</p>
-                        ${imageHTML}
-                    </div>
-                `;
+                // Generate the exact HTML structure needed
+                const blockCode = `<div class="marquee-item">\n    <p>⚠️ <strong>DAILY ROUTINE:</strong> ${textValue}</p>\n    ${gifHTML}\n</div>`;
                 
-                alert("Display updated! Save your changes in your browser/editor and run your push commands.");
+                // Show the output box and display the code
+                document.getElementById('generatedCodeBox').value = blockCode;
+                document.getElementById('codeOutputArea').style.display = 'block';
+                
+                // Temporarily show it on your screen so you can preview it
+                document.getElementById('noticeMarqueeContainer').innerHTML = blockCode;
             });
         }
     </script>
