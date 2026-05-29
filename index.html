@@ -3,62 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SO Biz Smart Marketplace & ERP</title>
+    <title>SO Biz Smart ERP & Marketplace Ecosystem</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: #0b0b0b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #0c0c0c; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
+        /* Category button mechanics */
         .category-btn {
-            background: #1a1a1a; color: #aaa; padding: 12px; 
+            background: #161616; color: #888; padding: 12px; 
             border: 1px solid #222; border-radius: 8px; 
             cursor: pointer; font-weight: 500; font-size: 0.85rem;
             transition: all 0.2s ease;
         }
         .category-btn.active { background: #4caf50; color: black; font-weight: bold; border-color: #4caf50; }
 
-        /* Smooth tab styling for ERP components */
+        /* ERP Tab bars */
         .erp-tab-btn {
-            background: #222; color: #aaa; border: 1px solid #333;
-            padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold;
+            background: #161616; color: #aaa; border: 1px solid #222;
+            padding: 10px 5px; border-radius: 6px; cursor: pointer; font-size: 0.75rem; font-weight: bold;
+            text-align: center; transition: all 0.15s ease;
         }
         .erp-tab-btn.active { background: #4caf50; color: black; border-color: #4caf50; }
+
+        /* General form inputs */
+        input, select, textarea {
+            width: 100%; padding: 10px; background: #1c1c1c; 
+            border: 1px solid #333; color: white; border-radius: 6px; 
+            font-size: 0.9rem; margin-top: 4px;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #4caf50; outline: none; }
+        
+        label { font-size: 0.8rem; color: #aaa; font-weight: 500; }
     </style>
 </head>
 <body>
 
-    <div id="so-biz-marketplace" style="width:100%; min-height: 100vh; padding-bottom: 40px;">
+    <div id="so-biz-master-wrapper" style="width:100%; min-height: 100vh; padding-bottom: 50px;">
 
-        <header style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #121212; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100;">
+        <header style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #111; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100;">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <div id="soBizIconBtn" style="cursor: pointer; background: #4caf50; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: black; display: flex; align-items: center; gap: 5px;">
                     ⚙️ <span>SO Biz</span>
                 </div>
                 <div>
                     <h2 style="margin: 0; font-size: 1.05rem; color: #fff; font-weight: 600;">Welcome to our Marketplace</h2>
-                    <span style="font-size: 0.75rem; color: #777; display: block; margin-top: 1px;">Thank you for visiting</span>
+                    <span style="font-size: 0.75rem; color: #666; display: block;">Thank you for visiting</span>
                 </div>
             </div>
             
             <div style="display: flex; align-items: center; gap: 10px;">
-                <select id="locationFilter" style="background: #1c1c1c; color: #fff; border: 1px solid #333; padding: 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
+                <select id="locationFilter" style="background: #161616; color: #fff; border: 1px solid #222; padding: 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; width: auto; margin:0;">
                     <option value="all">🌍 Global (All)</option>
                     <option value="local">📍 Local Region</option>
                     <option value="international">✈️ International</option>
                 </select>
                 
-                <button id="partnerGateTrigger" style="background: #222; border: 1px solid #333; color: #4caf50; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                <button id="partnerGateTrigger" style="background: #161616; border: 1px solid #222; color: #4caf50; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
                     🤝 <span>Partner Portal</span>
                 </button>
             </div>
         </header>
 
         <div style="background: #161616; border-bottom: 1px solid #222; padding: 12px 20px; font-size: 0.85rem; color: #ffeb3b;">
-            <div id="noticeMarqueeContainer" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
-                <p id="globalNoticePara">⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Marketplace active globally with 20 partners.</p>
-                <div id="globalNoticeAssetContainer"></div>
+            <div style="max-width:650px; margin:0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px;">
+                <p id="globalNetworkNotice">📢 <strong style="color:#fff;">ADMIN NETWORK UPDATE:</strong> System matrix active. Welcome to the centralized marketplace network stream.</p>
+                <div id="globalNetworkVisualAsset"></div>
             </div>
         </div>
 
@@ -90,104 +102,229 @@
         </main>
 
         <div id="unifiedStorefrontView" style="display: none; padding: 20px 15px; max-width: 650px; margin: 0 auto;">
-            <button id="backToMarketplaceBtn" style="background: #1c1c1c; border: 1px solid #333; color: #aaa; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-bottom: 20px; font-size: 0.85rem; font-weight: bold;">⬅️ Back to Directory</button>
-            <div id="storefrontContentWindow" style="background: #121212; border: 1px solid #222; border-radius: 12px; padding: 25px; text-align: center;">
+            <button id="backToMarketplaceBtn" style="background: #161616; border: 1px solid #222; color: #aaa; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-bottom: 20px; font-size: 0.85rem; font-weight: bold;">⬅️ Back to Directory</button>
+            <div id="storefrontContentWindow" style="background: #111; border: 1px solid #222; border-radius: 12px; padding: 25px; text-align: center;">
                 </div>
         </div>
 
         <div id="partnerDashboardView" style="display: none; padding: 20px 15px; max-width: 650px; margin: 0 auto;">
-            <div style="background: #112244; border: 1px solid #1f3a60; padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+            
+            <div style="background: #0d1e3d; border: 1px solid #1f3a60; padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <h3 id="dashPartnerName" style="margin: 0; color: white; font-size: 1.1rem;">Partner Workspace</h3>
-                    <span style="font-size:0.75rem; color: #8ab4f8;">Session secured automatically</span>
+                    <span style="font-size:0.75rem; color: #8ab4f8;">SO Biz Engine v2.0 • Session Secured</span>
                 </div>
-                <button id="manualLogoutBtn" style="background: #ea4335; border: none; color: white; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem;">Exit Dashboard</button>
+                <button id="manualLogoutBtn" style="background: #ea4335; border: none; color: white; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem;">Exit Workspace</button>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px;">
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 15px;">
                 <button class="erp-tab-btn active" id="tabStocksBtn" onclick="switchErpTab('stocks')">📦 Stocks</button>
                 <button class="erp-tab-btn" id="tabSalesBtn" onclick="switchErpTab('sales')">📈 Log Sale</button>
-                <button class="erp-tab-btn" id="tabMetricsBtn" onclick="switchErpTab('metrics')">📊 Audits</button>
-                <button class="erp-tab-btn" id="tabIssueBtn" onclick="switchErpTab('issue')">🚨 Issue</button>
+                <button class="erp-tab-btn" id="tabMetricsBtn" onclick="switchErpTab('metrics')">📊 Metrics</button>
+                <button class="erp-tab-btn" id="tabIssueBtn" onclick="switchErpTab('issue')">🚨 Report</button>
+                <button class="erp-tab-btn" id="tabHubBtn" onclick="switchErpTab('hub')">📢 Net Hub</button>
             </div>
 
-            <div style="background: #121212; padding: 20px; border-radius: 8px; border: 1px solid #222;">
+            <div style="background: #111; padding: 20px; border-radius: 10px; border: 1px solid #222;">
                 
                 <div id="erpTabStocks">
-                    <h4 style="color: #4caf50; margin-bottom: 10px; font-size: 0.95rem;">Available Stock Inventory</h4>
-                    <div id="erpStockList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; gap:10px;">
+                        <h4 style="color: #4caf50; font-size: 0.95rem;">Active Stock Ledger</h4>
+                        <button id="toggleNewItemFormBtn" style="background:#4caf50; color:black; border:none; padding:6px 12px; border-radius:6px; font-weight:bold; cursor:pointer; font-size:0.8rem;">+ Add New Item</button>
+                    </div>
+
+                    <div id="newItemFormBox" style="display:none; background:#161616; padding:15px; border-radius:8px; border:1px dashed #4caf50; margin-bottom:20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                            <strong style="color:#4caf50; font-size:0.85rem;">Inventory Configuration Form</strong>
+                            <button id="closeNewItemFormBtn" style="background:none; border:none; color:#ff4444; font-size:0.75rem; cursor:pointer; font-weight:bold;">[Close Form]</button>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                            <div>
+                                <label>Product Name</label>
+                                <input type="text" id="formProdName" placeholder="e.g., Silk Blend Material">
+                            </div>
+                            <div>
+                                <label>Quantity Configured</label>
+                                <input type="number" id="formProdQty" value="10">
+                            </div>
+                            <div>
+                                <label>Cost Price ($)</label>
+                                <input type="number" id="formProdCost" value="20">
+                            </div>
+                            <div>
+                                <label>Retail Price ($)</label>
+                                <input type="number" id="formProdRetail" value="35">
+                            </div>
+                            <div>
+                                <label>Low Alert Limit</label>
+                                <input type="number" id="formProdAlert" value="3">
+                            </div>
+                            <div>
+                                <label>Batch Memo Entry</label>
+                                <input type="text" id="formProdMemo" placeholder="e.g., Batch-A Logistics">
+                            </div>
+                        </div>
+                        <button onclick="saveProductToInventory()" style="background:#4caf50; color:black; width:100%; font-weight:bold; padding:10px; border:none; border-radius:6px; cursor:pointer; font-size:0.85rem;">Save to My Inventory Matrix</button>
+                    </div>
+
+                    <div style="background:#161616; padding:12px; border-radius:8px; border:1px solid #222; margin-bottom:15px;">
+                        <input type="text" id="stockSearchInput" placeholder="🔍 Search product catalog inventory..." style="margin-top:0; margin-bottom:10px; font-size:0.85rem; padding:8px;">
+                        
+                        <div style="display:flex; flex-wrap:wrap; gap:5px; align-items:center;">
+                            <span style="font-size:0.7rem; color:#666; font-weight:bold; text-transform:uppercase;">Sort Matrix:</span>
+                            <select id="stockSortSelect" style="width:auto; padding:4px 8px; font-size:0.75rem; background:#222; border:1px solid #333; margin:0; cursor:pointer;">
+                                <option value="date">📅 Date Added Registry</option>
+                                <option value="alpha">🔤 Alphabetical (A to Z)</option>
+                                <option value="qtyHigh">📈 Quantity: High to Low</option>
+                                <option value="qtyLow">📉 Quantity: Low to High</option>
+                                <option value="alert">⚠️ Low Alert Test Bounds</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="erpStockList" style="display: flex; flex-direction: column; gap: 8px;"></div>
                 </div>
 
                 <div id="erpTabSales" style="display: none;">
-                    <h4 style="color: #4caf50; margin-bottom: 12px; font-size: 0.95rem;">Log Transaction Entry</h4>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <h4 style="color: #4caf50; margin-bottom: 12px; font-size: 0.95rem;">Quick Register Counter Terminal</h4>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
                         <div>
-                            <label style="display:block; font-size: 0.8rem; color:#aaa; margin-bottom:4px;">Select Sold Item:</label>
-                            <select id="erpSaleItemSelect" style="width:100%; padding:8px; background:#222; border:1px solid #333; color:white; border-radius:4px;"></select>
+                            <label>Quick Find Item Matcher</label>
+                            <input type="text" id="salesQuickFindInput" placeholder="Type keyword to match profile instantly..." style="padding:8px;">
                         </div>
                         <div>
-                            <label style="display:block; font-size: 0.8rem; color:#aaa; margin-bottom:4px;">Quantity Transacted:</label>
-                            <input type="number" id="erpSaleQtyInput" value="1" min="1" style="width:100%; padding:8px; background:#222; border:1px solid #333; color:white; border-radius:4px;">
+                            <label>Target Active Listing Allocation</label>
+                            <select id="erpSaleItemSelect"></select>
                         </div>
-                        <button onclick="executeLogSale()" style="background:#4caf50; color:black; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">Record Cash Logging</button>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                            <div>
+                                <label>Quantities Transacted</label>
+                                <input type="number" id="erpSaleQtyInput" value="1" min="1">
+                            </div>
+                            <div>
+                                <label>Transaction Process Date</label>
+                                <input type="date" id="erpSaleDateInput">
+                            </div>
+                        </div>
+                        <button onclick="executeLogSale()" style="background:#4caf50; color:black; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer; margin-top:5px; font-size:0.9rem;">Process to Register Sale</button>
                     </div>
                 </div>
 
                 <div id="erpTabMetrics" style="display: none;">
-                    <h4 style="color: #ffeb3b; margin-bottom: 12px; font-size: 0.95rem;">Real-Time Financial Audit</h4>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
-                        <div style="background: #1a1a1a; padding: 10px; border-radius: 6px; border:1px solid #222;">
-                            <span style="font-size:0.7rem; color:#888; display:block;">GROSS REVENUE</span>
-                            <span id="erpMetricRevenue" style="font-size:1.1rem; font-weight:bold; color:#4caf50;">$0.00</span>
+                    <h4 style="color: #ffeb3b; font-size: 0.95rem; margin-bottom: 10px;">Date-Bounded Accounting Audit</h4>
+                    
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; background:#161616; padding:10px; border-radius:6px; border:1px solid #222; margin-bottom:15px;">
+                        <div>
+                            <label style="font-size:0.7rem;">FROM DATE</label>
+                            <input type="date" id="auditFromDate" style="padding:4px; font-size:0.8rem; margin:0;">
                         </div>
-                        <div style="background: #1a1a1a; padding: 10px; border-radius: 6px; border:1px solid #222;">
-                            <span style="font-size:0.7rem; color:#888; display:block;">UNITS DEPLOYED</span>
-                            <span id="erpMetricUnits" style="font-size:1.1rem; font-weight:bold; color:#ffeb3b;">0 pcs</span>
+                        <div>
+                            <label style="font-size:0.7rem;">TO DATE</label>
+                            <input type="date" id="auditToDate" style="padding:4px; font-size:0.8rem; margin:0;">
                         </div>
                     </div>
-                    <div style="background:#161616; padding:10px; border-radius:6px; border:1px solid #222;">
-                        <span style="font-size:0.75rem; color:#aaa;">📝 Recent Accounting Logs:</span>
-                        <div id="erpAuditHistoryLog" style="font-size:0.75rem; color:#666; margin-top:6px; display:flex; flex-direction:column; gap:4px;">No active transactions recorded this session.</div>
+
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px;">
+                        <div style="background: #161616; padding: 12px; border-radius: 6px; border:1px solid #222;">
+                            <span style="font-size:0.7rem; color:#777; display:block; font-weight:bold; text-transform:uppercase;">Gross Core Revenue</span>
+                            <span id="erpMetricRevenue" style="font-size:1.2rem; font-weight:bold; color:#4caf50;">$0.00</span>
+                        </div>
+                        <div style="background: #161616; padding: 12px; border-radius: 6px; border:1px solid #222;">
+                            <span style="font-size:0.7rem; color:#777; display:block; font-weight:bold; text-transform:uppercase;">Volume Dispatched</span>
+                            <span id="erpMetricUnits" style="font-size:1.2rem; font-weight:bold; color:#ffeb3b;">0 pcs</span>
+                        </div>
+                    </div>
+
+                    <div style="border-top:1px dashed #333; padding-top:15px;">
+                        <h4 style="color: #fff; font-size: 0.9rem; margin-bottom: 10px; display:flex; justify-content:space-between;">
+                            <span>📋 Credit & Debit Debt Book</span>
+                            <span style="font-size:0.75rem; color:#ffeb3b;" id="summaryDebtBookLabel">Bal: Net Fluid</span>
+                        </h4>
+                        
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:15px;">
+                            <div style="background:#1a1111; border:1px solid #442222; padding:10px; border-radius:6px;">
+                                <span style="font-size:0.7rem; color:#ff4444; font-weight:bold; display:block; margin-bottom:5px;">🚨 WHAT I OWE (LIABILITIES)</span>
+                                <div id="debtWhatIOweLog" style="font-size:0.75rem; color:#aaa; display:flex; flex-direction:column; gap:4px;">
+                                    <div>• Logistics Hub: $120 <span style="color:#ff4444;">(Due 06/05)</span></div>
+                                </div>
+                            </div>
+                            
+                            <div style="background:#111a11; border:1px solid #224422; padding:10px; border-radius:6px;">
+                                <span style="font-size:0.7rem; color:#4caf50; font-weight:bold; display:block; margin-bottom:5px;">💰 THEY OWE ME (ASSETS)</span>
+                                <div id="debtTheyOweMeLog" style="font-size:0.75rem; color:#aaa; display:flex; flex-direction:column; gap:4px;">
+                                    <div>• Customer Client-A: $45 <span style="color:#4caf50;">(Pending)</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <span style="font-size:0.75rem; color:#555; font-weight:bold; text-transform:uppercase; display:block; margin-bottom:5px;">Session Transaction Stream Logs:</span>
+                        <div id="erpAuditHistoryLog" style="font-size:0.75rem; color:#565656; display:flex; flex-direction:column; gap:4px;">No cash ledger actions taken this session frame.</div>
                     </div>
                 </div>
 
                 <div id="erpTabIssue" style="display: none;">
-                    <h4 style="color: #ea4335; margin-bottom: 10px; font-size: 0.95rem;">Administrative Complaint Portal</h4>
-                    <p style="font-size:0.8rem; color:#888; margin-bottom:10px;">Direct communication channel line to Master Admin center logs.</p>
-                    <textarea id="erpIssueTextInput" style="width:100%; height:80px; background:#222; border:1px solid #333; border-radius:6px; color:white; padding:8px; font-size:0.85rem;" placeholder="Describe operational, display, or layout synchronization issues..."></textarea>
-                    <button onclick="submitErpIssue()" style="background:#ea4335; color:white; border:none; padding:10px 15px; border-radius:4px; font-weight:bold; margin-top:8px; cursor:pointer;">File Report Frame</button>
+                    <h4 style="color: #ea4335; margin-bottom: 12px; font-size: 0.95rem;">Administrative Communication Channel</h4>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label>Select Category of Report</label>
+                            <select id="erpReportCategorySelect">
+                                <option value="Inventory Description Error">📦 Inventory Descriptions Discrepancy</option>
+                                <option value="Payment Settlement Issue">💵 Payment / Cashier Ledger Block</option>
+                                <option value="Technical Framework Issue">🛠️ Technical Framework Fault</option>
+                                <option value="General Inquiry Field">❓ General Network Inquiry</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Detailed Message Frame</label>
+                            <textarea id="erpIssueTextInput" style="height:90px;" placeholder="Describe layout corrections or inventory matrix bugs directly for admin processing..."></textarea>
+                        </div>
+                        <button onclick="submitErpIssue()" style="background:#ea4335; color:white; border:none; padding:12px; border-radius:6px; font-weight:bold; cursor:pointer;">File Report Frame</button>
+                    </div>
+                </div>
+
+                <div id="erpTabHub" style="display: none;">
+                    <h4 style="color: #ffeb3b; margin-bottom: 10px; font-size: 0.95rem;">Central Network Hub Mirror</h4>
+                    <p style="font-size:0.8rem; color:#888; margin-bottom:15px;">This terminal tracks structural text configurations, operational imagery, or media GIFs broadcasted by the Master Admin.</p>
+                    
+                    <div style="background:#161616; padding:15px; border-radius:8px; border:1px solid #222; text-align:center;">
+                        <span style="font-size:0.65rem; background:#333; padding:2px 6px; border-radius:4px; color:#aaa; font-weight:bold;">LIVE INTERACTIVE MIRROR FEED</span>
+                        <p id="hubNoticeEchoText" style="font-size:0.9rem; color:#fff; margin-top:10px; font-weight:500;">No manual adjustments applied by administrator workspace.</p>
+                        <div id="hubNoticeEchoVisual" style="margin-top:10px;"></div>
+                    </div>
                 </div>
 
             </div>
         </div>
 
-        <div id="partnerLoginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
-            <div style="background: #1a1a1a; padding: 25px; border-radius: 12px; width: 100%; max-width: 340px; border: 1px solid #333;">
-                <h3 style="color: #4caf50; margin-bottom: 15px; font-size: 1.2rem;">Partner Verification</h3>
-                <label style="display: block; margin-bottom: 6px; font-size: 0.8rem; color: #aaa;">Business Slot Identifier:</label>
-                <input type="text" id="partnerIdInput" style="width: 100%; padding: 10px; background: #262626; border: 1px solid #444; color: white; border-radius: 6px; font-size: 0.9rem; margin-bottom: 15px;" placeholder="Enter assigned partner code">
-                <button id="submitPartnerLogin" style="width: 100%; padding: 12px; background: #4caf50; color: black; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">Access Slot</button>
-                <button id="closePartnerLogin" style="width: 100%; padding: 8px; background: transparent; color: #666; border: none; cursor: pointer; font-size: 0.8rem; margin-top: 8px;">Cancel</button>
+        <div id="partnerLoginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
+            <div style="background: #161616; padding: 25px; border-radius: 12px; width: 100%; max-width: 340px; border: 1px solid #222;">
+                <h3 style="color: #4caf50; margin-bottom: 15px; font-size: 1.15rem;">Partner Verification Portal</h3>
+                <label>Business Slot Identifier Key:</label>
+                <input type="text" id="partnerIdInput" style="margin-bottom: 15px; background:#222;" placeholder="Enter assigned token identifier">
+                <button id="submitPartnerLogin" style="width: 100%; padding: 12px; background: #4caf50; color: black; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">Access Workspace</button>
+                <button id="closePartnerLogin" style="width: 100%; padding: 8px; background: transparent; color: #555; border: none; cursor: pointer; font-size: 0.8rem; margin-top: 8px;">Cancel</button>
             </div>
         </div>
 
-        <div id="localAdminPanel" style="display: none; background: #1e1e1e; border: 2px dashed #ffeb3b; padding: 20px; margin: 40px auto; max-width: 650px; border-radius: 10px; color: white;">
-            <h3 style="color: #ffeb3b; margin-bottom: 5px;">👑 Master Administration Bench</h3>
-            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 15px;">Configure global customer notice and running text assets smoothly from this workspace engine.</p>
+        <div id="localAdminPanel" style="display: none; background: #141414; border: 2px dashed #ffeb3b; padding: 20px; margin: 40px auto; max-width: 650px; border-radius: 12px; color: white;">
+            <h3 style="color: #ffeb3b; margin-bottom: 4px; font-size:1.1rem;">👑 Master Administration Bench Control</h3>
+            <p style="font-size: 0.8rem; color: #777; margin-bottom: 15px;">Configure real-time network messages, running texts, and animated asset arrays globally.</p>
             
-            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">Running Notice Text Update:</label>
-            <input type="text" id="newNoticeText" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:12px;" value="System sync complete. Marketplace active globally with 20 partners.">
+            <label>Network Update Banner Text Announcement:</label>
+            <input type="text" id="newNoticeText" value="System matrix running smoothly. Global operational channels configured with 20 partner slots.">
             
-            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">GIF Showcase URL Link (Empty if text only):</label>
-            <input type="text" id="newNoticeGIF" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:15px;" placeholder="e.g., https://media.giphy.com/media/.../giphy.gif">
+            <label style="display:block; margin-top:10px;">Network Media Visual Asset link (Image or Animated GIF URL):</label>
+            <input type="text" id="newNoticeGIF" placeholder="e.g., https://media.giphy.com/media/.../giphy.gif">
             
-            <button id="generateCodeBtn" style="background:#ffeb3b; color:black; border:none; padding:12px; cursor:pointer; border-radius:6px; font-weight:bold; width:100%;">Push Instant Live Local Test</button>
+            <button id="generateCodeBtn" style="background:#ffeb3b; color:black; border:none; padding:12px; margin-top:15px; cursor:pointer; border-radius:6px; font-weight:bold; width:100%; font-size:0.9rem;">Broadcast Live Network Content Stream</button>
         </div>
 
     </div>
 
     <script>
-        // GLOBAL REGISTRY METRIC BASE
+        // BACKUP COMPACT REGISTRY DATA MATRIX WITH INTEGRATED LOW ALERT QUANTITY LIMITS
         const GLOBAL_SHOP_REGISTRY = [
             {
                 id: "P001",
@@ -201,8 +338,8 @@
                 revenue: 0,
                 unitsSold: 0,
                 products: [
-                    { id: "item-101", name: "Custom Tool Fitting", price: 45, stockCount: 12, img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150" },
-                    { id: "item-102", name: "Structural Reinforcement Rod", price: 110, stockCount: 5, img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150" }
+                    { id: "item-101", name: "Custom Tool Fitting", price: 45, cost: 20, stockCount: 12, alertLimit: 4, dateAdded: "2026-05-10", memo: "Batch-Alpha" },
+                    { id: "item-102", name: "Structural Reinforcement Rod", price: 110, cost: 60, stockCount: 2, alertLimit: 3, dateAdded: "2026-05-18", memo: "Batch-Beta" } // Low Alert Target
                 ]
             },
             {
@@ -217,7 +354,7 @@
                 revenue: 0,
                 unitsSold: 0,
                 products: [
-                    { id: "item-201", name: "Bespoke Suit Set", price: 350, stockCount: 3, img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=150" }
+                    { id: "item-201", name: "Bespoke Suit Set", price: 350, cost: 150, stockCount: 5, alertLimit: 1, dateAdded: "2026-05-02", memo: "Import Tailor Line" }
                 ]
             },
             {
@@ -232,7 +369,7 @@
                 revenue: 0,
                 unitsSold: 0,
                 products: [
-                    { id: "item-301", name: "Provisions Pack Box", price: 25, stockCount: 40, img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=150" }
+                    { id: "item-301", name: "Provisions Pack Box", price: 25, cost: 12, stockCount: 40, alertLimit: 10, dateAdded: "2026-05-22", memo: "Wholesale Grocery" }
                 ]
             }
         ];
@@ -244,12 +381,16 @@
             renderMarketplace("all", "all");
             initListeners();
             
+            // Unmask the admin configuration deck instantly when launched locally
             if (window.location.hostname === "localhost" || window.location.protocol === "file:") {
                 document.getElementById("localAdminPanel").style.display = "block";
             }
+            
+            // Autofill transaction date anchor
+            document.getElementById("erpSaleDateInput").value = new Date().toISOString().substring(0, 10);
         });
 
-        // Main Rendering Machine
+        // Main Visual Matrix Renderer
         function renderMarketplace(catFilter = "all", locFilter = "all") {
             const topRow = document.getElementById("topShopsRow");
             const mainGrid = document.getElementById("shopDirectoryGrid");
@@ -265,7 +406,7 @@
             sortedShops.forEach(shop => {
                 topRow.insertAdjacentHTML('beforeend', `
                     <div onclick="viewProfile('${shop.id}')" style="min-width: 120px; background: #121212; padding: 12px; border-radius: 10px; border: 1px solid #222; text-align: center; cursor: pointer; flex-shrink: 0;">
-                        <div style="width: 45px; height: 45px; background-image: url('${shop.image}'); background-size: cover; background-position: center; border-radius: 50%; margin: 0 auto 8px; border: 1px solid #333;"></div>
+                        <div style="width: 45px; height: 45px; background-image: url('${shop.image}'); background-size: cover; background-position: center; border-radius: 50%; margin: 0 auto 8px; border: 1px solid #222;"></div>
                         <div style="font-size: 0.75rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff;">${shop.name}</div>
                         <div style="font-size: 0.65rem; color: #4caf50; margin-top: 3px;">⭐ Top Pick</div>
                     </div>
@@ -278,7 +419,7 @@
 
                 mainGrid.insertAdjacentHTML('beforeend', `
                     <div onclick="viewProfile('${shop.id}')" style="background: #121212; border: 1px solid #222; border-radius: 10px; padding: 14px; display: flex; gap: 14px; align-items: center; cursor: pointer;">
-                        <img src="${shop.image}" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px; border:1px solid #222;" alt="">
+                        <img src="${shop.image}" style="width:65px; height:65px; object-fit:cover; border-radius:8px; border:1px solid #222;">
                         <div style="flex-grow: 1; min-width: 0;">
                             <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
                                 <h4 style="margin: 0; font-size: 0.95rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${shop.name}</h4>
@@ -306,7 +447,6 @@
             });
         }
 
-        // Customer Profile View Routing
         function viewProfile(shopId) {
             const shop = GLOBAL_SHOP_REGISTRY.find(s => s.id === shopId);
             if (!shop) return;
@@ -316,27 +456,20 @@
                 : `<img src="${shop.image}" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin: 15px 0; border: 1px solid #222;">`;
 
             document.getElementById("storefrontContentWindow").innerHTML = `
-                <span style="font-size: 0.7rem; color: #4caf50; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Live Operational Display</span>
                 <h2 style="margin: 8px 0 4px; font-size: 1.4rem; color: #fff;">${shop.name}</h2>
                 <p style="color: #666; font-size: 0.8rem; margin-bottom: 15px;">Operational Frame: [${shop.location.toUpperCase()}]</p>
                 <p style="font-size: 0.9rem; color: #ccc; line-height: 1.4;">"${shop.motto}"</p>
-                
                 ${visualAsset}
-                
                 <div style="text-align: left; margin-top: 20px;">
-                    <h5 style="color: #aaa; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px;">Available Stock Directory</h5>
+                    <h5 style="color: #aaa; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px;">Available Stocks</h5>
                     ${shop.products.map(p => `
-                        <div style="background: #1a1a1a; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; margin-bottom: 8px;">
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <img src="${p.img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                                <div style="font-size:0.85rem; font-weight:500; color:#fff;">${p.name}</div>
-                            </div>
+                        <div style="background: #161616; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; margin-bottom: 8px;">
+                            <div style="font-size:0.85rem; font-weight:500; color:#fff;">${p.name}</div>
                             <div style="font-size: 0.85rem; color: #4caf50; font-weight: bold;">$${p.price}.00</div>
                         </div>
                     `).join('')}
                 </div>
             `;
-
             document.getElementById("customerScreen").style.display = "none";
             document.getElementById("partnerDashboardView").style.display = "none";
             document.getElementById("unifiedStorefrontView").style.display = "block";
@@ -349,13 +482,16 @@
         }
 
         // ==========================================
-        // ERP WORKSPACE PANEL ACTIONS (PARTNER ENGINE)
+        // ERP WORKSPACE PANEL ACTIONS (PARTNER ENGINE RESTORED)
         // ==========================================
         function startSession(partner) {
             activeSession = partner;
             document.getElementById("dashPartnerName").innerText = partner.name;
             
-            // Hydrate inner contents
+            // Sync current date tags to bounding components
+            document.getElementById("auditFromDate").value = "2026-05-01";
+            document.getElementById("auditToDate").value = "2026-05-31";
+            
             refreshErpInventoryView();
             switchErpTab('stocks');
             
@@ -366,76 +502,160 @@
         }
 
         function switchErpTab(targetTab) {
-            const tabs = ['stocks', 'sales', 'metrics', 'issue'];
+            const tabs = ['stocks', 'sales', 'metrics', 'issue', 'hub'];
             tabs.forEach(t => {
                 document.getElementById(`erpTab${t.charAt(0).toUpperCase() + t.slice(1)}`).style.display = (t === targetTab) ? 'block' : 'none';
                 document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`).classList.toggle('active', t === targetTab);
             });
         }
 
+        // TAB 1 FULL SPEC FILTERS: SEARCH AND COMPLEX SORT MATRIX MULTI-CRITERIA
         function refreshErpInventoryView() {
             if (!activeSession) return;
             const stockListDiv = document.getElementById("erpStockList");
             const selectDropdown = document.getElementById("erpSaleItemSelect");
             
+            const searchTerm = document.getElementById("stockSearchInput").value.toLowerCase().trim();
+            const sortCriteria = document.getElementById("stockSortSelect").value;
+            
             stockListDiv.innerHTML = "";
             selectDropdown.innerHTML = "";
 
-            activeSession.products.forEach(p => {
-                // Render stock items rows
+            // 1. Process matching queries
+            let filteredProducts = activeSession.products.filter(p => p.name.toLowerCase().includes(searchTerm));
+
+            // 2. Process criteria allocations
+            if (sortCriteria === "alpha") {
+                filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+            } else if (sortCriteria === "qtyHigh") {
+                filteredProducts.sort((a, b) => b.stockCount - a.stockCount);
+            } else if (sortCriteria === "qtyLow") {
+                filteredProducts.sort((a, b) => a.stockCount - b.stockCount);
+            } else if (sortCriteria === "date") {
+                filteredProducts.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+            } else if (sortCriteria === "alert") {
+                // Low Alert bounds prioritize items failing alert limit checks
+                filteredProducts.sort((a, b) => (a.stockCount <= a.alertLimit ? -1 : 1));
+            }
+
+            // 3. Render catalog mapping layout
+            filteredProducts.forEach(p => {
+                const isLowAlert = p.stockCount <= p.alertLimit;
+                const borderHighlight = isLowAlert ? "border: 1px solid #ff4444; background:#221111;" : "border: 1px solid #222; background:#161616;";
+                const alertBadge = isLowAlert ? `<span style="background:#ff4444; color:black; padding:2px 6px; border-radius:4px; font-size:0.65rem; font-weight:bold; margin-left:8px;">⚠️ CRITICAL LOW ALERT</span>` : '';
+
                 stockListDiv.insertAdjacentHTML('beforeend', `
-                    <div style="background:#1a1a1a; padding:10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; border:1px solid #222;">
-                        <div style="font-size:0.85rem; color:white; font-weight:bold;">${p.name}</div>
-                        <div style="font-size:0.8rem; color:#aaa;">Stock: <span style="color:#ffeb3b; font-weight:bold;">${p.stockCount} left</span> | Unit: $${p.price}</div>
+                    <div style="padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; ${borderHighlight}">
+                        <div>
+                            <div style="font-size:0.85rem; color:white; font-weight:bold;">${p.name} ${alertBadge}</div>
+                            <div style="font-size:0.7rem; color:#666; margin-top:3px;">📅 Logged: ${p.dateAdded} | Memo: ${p.memo}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.85rem; color:#ffeb3b; font-weight:bold;">${p.stockCount} left</div>
+                            <div style="font-size:0.7rem; color:#aaa; margin-top:2px;">Cost: $${p.cost} | Retail: $${p.price}</div>
+                        </div>
                     </div>
                 `);
 
-                // Render option row into sales logic terminal
-                selectDropdown.insertAdjacentHTML('beforeend', `<option value="${p.id}">${p.name} ($${p.price})</option>`);
+                selectDropdown.insertAdjacentHTML('beforeend', `<option value="${p.id}">${p.name} ($${p.price}.00)</option>`);
             });
 
-            // Hydrate metrics accounting summary numbers
+            // Sync structural metrics overview dashboard counters
             document.getElementById("erpMetricRevenue").innerText = `$${activeSession.revenue}.00`;
             document.getElementById("erpMetricUnits").innerText = `${activeSession.unitsSold} pcs`;
+        }
+
+        // SAVE PRODUCT SECTOR CONTEXT TO ARRAY REGISTRY
+        function saveProductToInventory() {
+            if (!activeSession) return;
+            
+            const name = document.getElementById("formProdName").value.trim();
+            const qty = parseInt(document.getElementById("formProdQty").value) || 0;
+            const cost = parseInt(document.getElementById("formProdCost").value) || 0;
+            const retail = parseInt(document.getElementById("formProdRetail").value) || 0;
+            const alertLim = parseInt(document.getElementById("formProdAlert").value) || 0;
+            const memo = document.getElementById("formProdMemo").value.trim() || "General Batch";
+
+            if (!name) { alert("Specification required: Product name parameter empty."); return; }
+
+            const newProductObj = {
+                id: "item-" + Math.floor(Math.random() * 100000),
+                name: name,
+                price: retail,
+                cost: cost,
+                stockCount: qty,
+                alertLimit: alertLim,
+                dateAdded: new Date().toISOString().substring(0, 10),
+                memo: memo,
+                img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150"
+            };
+
+            activeSession.products.push(newProductObj);
+            
+            // Clean inputs
+            document.getElementById("formProdName").value = "";
+            document.getElementById("newItemFormBox").style.display = "none";
+            
+            refreshErpInventoryView();
+            renderMarketplace("all", "all");
+            alert("New inventory component injected successfully into central asset matrix.");
+        }
+
+        // TAB 2 QUICK TEXT FIND LOGIC MATCHES
+        function executeSalesQuickFind() {
+            if (!activeSession) return;
+            const token = document.getElementById("salesQuickFindInput").value.toLowerCase().trim();
+            const dropdown = document.getElementById("erpSaleItemSelect");
+            
+            for (let i = 0; i < dropdown.options.length; i++) {
+                if (dropdown.options[i].text.toLowerCase().includes(token)) {
+                    dropdown.selectedIndex = i;
+                    break;
+                }
+            }
         }
 
         function executeLogSale() {
             if (!activeSession) return;
             const itemId = document.getElementById("erpSaleItemSelect").value;
             const qty = parseInt(document.getElementById("erpSaleQtyInput").value) || 1;
+            const dateProcess = document.getElementById("erpSaleDateInput").value;
             
             const targetItem = activeSession.products.find(p => p.id === itemId);
             if (!targetItem) return;
 
             if (targetItem.stockCount < qty) {
-                alert("Audit conflict: Logged quantity exceeds remaining active stock frame.");
+                alert("Audit conflict: Operational request quantity exceeds inventory framework parameters.");
                 return;
             }
 
-            // Execute automated matrix calculations
             targetItem.stockCount -= qty;
             const cashFlow = targetItem.price * qty;
             activeSession.revenue += cashFlow;
             activeSession.unitsSold += qty;
 
-            // Log entry to audit timeline box
             const historyLog = document.getElementById("erpAuditHistoryLog");
-            if (historyLog.innerText.includes("No active transactions")) historyLog.innerHTML = "";
+            if (historyLog.innerText.includes("No cash ledger actions")) historyLog.innerHTML = "";
             
             historyLog.insertAdjacentHTML('afterbegin', `
-                <div style="background:#222; padding:6px; border-radius:4px; margin-bottom:4px; color:#4caf50;">
-                    ✅ Sold ${qty}x ${targetItem.name} (+$${cashFlow}.00)
+                <div style="background:#161616; padding:8px; border-radius:6px; border:1px solid #222; margin-bottom:4px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="color:#4caf50; font-weight:bold;">✅ Dispense: ${qty}x ${targetItem.name}</span>
+                    <span style="color:#666; font-size:0.7rem;">Date: ${dateProcess} | Vol: +$${cashFlow}</span>
                 </div>
             `);
 
             refreshErpInventoryView();
-            alert("Cash transaction entry cleared and added to ledger audit matrix.");
+            alert("Transaction ledger line closed and computed globally.");
         }
 
+        // TAB 4 DIRECT SELECTIVE CATEGORY SUBMISSIONS
         function submitErpIssue() {
-            const txt = document.getElementById("erpIssueTextInput").value.trim();
-            if(!txt) return;
-            alert("Operational alert log compiled and transferred securely to administration data records.");
+            const cat = document.getElementById("erpReportCategorySelect").value;
+            const text = document.getElementById("erpIssueTextInput").value.trim();
+            
+            if(!text) { alert("Message field empty."); return; }
+            
+            alert(`Report [Category: ${cat}] packed securely and funneled to Admin records line.`);
             document.getElementById("erpIssueTextInput").value = "";
         }
 
@@ -444,11 +664,11 @@
             logoutTimer = setTimeout(() => {
                 activeSession = null;
                 exitToDirectory();
-                alert("Session safety lock triggered due to idle period.");
+                alert("Security timeout: Workspace connection closed due to idle safety parameters.");
             }, 15 * 60 * 1000);
         }
 
-        // Event Listeners Framework
+        // Interfacing Operational Core Hook Attachments
         function initListeners() {
             document.getElementById("soBizIconBtn").addEventListener('click', exitToDirectory);
             document.getElementById("backToMarketplaceBtn").addEventListener('click', exitToDirectory);
@@ -457,12 +677,17 @@
             window.addEventListener('mousemove', () => { if(activeSession) refreshTimeout(); });
             window.addEventListener('keydown', () => { if(activeSession) refreshTimeout(); });
 
-            // 1. FIXED: KEYBOARD ENTER "GO" CAPABILITY FOR PORTAL ENTRY
+            // Keyboard tracking key binds
             document.getElementById("partnerIdInput").addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    document.getElementById("submitPartnerLogin").click();
-                }
+                if (e.key === 'Enter') document.getElementById("submitPartnerLogin").click();
             });
+            document.getElementById("stockSearchInput").addEventListener('input', refreshErpInventoryView);
+            document.getElementById("stockSortSelect").addEventListener('change', refreshErpInventoryView);
+            document.getElementById("salesQuickFindInput").addEventListener('input', executeSalesQuickFind);
+
+            // Slider form displays
+            document.getElementById("toggleNewItemFormBtn").addEventListener('click', () => { document.getElementById("newItemFormBox").style.display = "block"; });
+            document.getElementById("closeNewItemFormBtn").addEventListener('click', () => { document.getElementById("newItemFormBox").style.display = "none"; });
 
             const catButtons = document.querySelectorAll(".category-btn");
             catButtons.forEach(btn => {
@@ -489,25 +714,34 @@
                     document.getElementById("partnerIdInput").value = "";
                     startSession(matched);
                 } else {
-                    alert("Invalid registration key code.");
+                    alert("Invalid signature deployment code token.");
                 }
             });
 
-            // Admin running notice controller hook
+            // Master Administration Bench Content Generation Stream
             const genBtn = document.getElementById("generateCodeBtn");
             if (genBtn) {
                 genBtn.addEventListener('click', () => {
-                    const txt = document.getElementById("newNoticeText").value || "Marketplace active globally.";
-                    const gifUrl = document.getElementById("newNoticeGIF").value.trim();
+                    const textContent = document.getElementById("newNoticeText").value || "System routing channels intact.";
+                    const assetUrl = document.getElementById("newNoticeGIF").value.trim();
                     
-                    document.getElementById("globalNoticePara").innerHTML = `⚠️ <strong>DAILY ROUTINE:</strong> ${txt}`;
+                    // 1. Hydrate open global marketplace streams
+                    document.getElementById("globalNetworkNotice").innerHTML = `📢 <strong style="color:#fff;">ADMIN NETWORK UPDATE:</strong> ${textContent}`;
+                    const targetBannerAsset = document.getElementById("globalNetworkVisualAsset");
                     
-                    const assetDiv = document.getElementById("globalNoticeAssetContainer");
-                    if (gifUrl) {
-                        assetDiv.innerHTML = `<img src="${gifUrl}" style="max-width:100%; border-radius:6px; max-height:150px; margin-top:8px;" alt="Notice Animation Asset">`;
+                    // 2. Hydrate inside internal partner megaphone networks
+                    document.getElementById("hubNoticeEchoText").innerText = textContent;
+                    const targetHubAsset = document.getElementById("hubNoticeEchoVisual");
+
+                    if (assetUrl) {
+                        const mediaTag = `<img src="${assetUrl}" style="max-width:100%; border-radius:8px; max-height:160px; margin-top:8px;" alt="Network Broadcast Graphic">`;
+                        targetBannerAsset.innerHTML = mediaTag;
+                        targetHubAsset.innerHTML = mediaTag;
                     } else {
-                        assetDiv.innerHTML = "";
+                        targetBannerAsset.innerHTML = "";
+                        targetHubAsset.innerHTML = "";
                     }
+                    alert("Central network content broadcast synchronized globally to all channels.");
                 });
             }
         }
