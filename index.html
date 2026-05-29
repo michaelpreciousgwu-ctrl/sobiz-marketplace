@@ -3,614 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SO Biz - Marketplace</title>
-    <link rel="manifest" href="manifest.json">
+    <title>SO Biz Marketplace</title>
     <style>
-        :root {
-            --primary: #4caf50;
-            --bg: #0b0b0b;
-            --card-bg: #121212;
-            --text: #ffffff;
-            --border: #222222;
-            --alert: #dc2626;
-            --success: #16a34a;
-            --badge-text: #1e293b; 
+        /* Base Styling to ensure smooth scroll and dark layout */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #0b0b0b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        
+        /* Hide scrollbars but keep functionality */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Category button styling */
+        .category-btn {
+            background: #1a1a1a; color: #aaa; padding: 12px; 
+            border: 1px solid #222; border-radius: 8px; 
+            cursor: pointer; font-weight: 500; font-size: 0.85rem;
+            transition: all 0.2s ease;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg);
-            color: var(--text);
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 15px;
-            padding-bottom: 90px; 
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-        }
-        h2, h3, h4 { margin-top: 0; color: var(--text); }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; margin-bottom: 4px; font-size: 0.9rem; font-weight: 500; color: var(--text); }
-        select, input, textarea, button {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #444;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 0.95rem;
-            font-family: inherit;
-            background: #222;
-            color: #fff;
-        }
-        textarea { resize: vertical; height: 60px; }
-        button {
-            background-color: var(--primary);
-            color: black;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-        button:active { background-color: #439a46; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-        .date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .hidden { display: none !important; }
-         
-        .item-row {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.95rem;
-            color: var(--text);
-        }
-
-        .complaint-card {
-            background: #2a1215 !important;
-            border: 1px solid #42181d !important;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            font-size: 0.85rem;
-            color: #ff9494 !important; 
-        }
-
-        .low-stock { color: #f44336; font-weight: bold; }
-         
-        .badge { 
-            background: #222 !important; 
-            color: #4caf50 !important; 
-            padding: 2px 8px; 
-            border-radius: 4px; 
-            font-size: 0.8rem; 
-            font-weight: 700;
-            display: inline-block;
-            margin-top: 4px;
-            border: 1px solid #333;
-        }
-
-        .notification-hub-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-            max-width: 800px;
-            margin: 15px auto;
-            padding: 0 15px;
-        }
-        @media (min-width: 480px) {
-            .notification-hub-grid { grid-template-columns: 1fr 1fr; }
-        }
-        .hub-banner {
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 0.88rem;
-            line-height: 1.4;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-        }
-        .hub-banner-title {
-            font-weight: 700;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .hub-system {
-            background: #2a1212; border: 1px solid #421818; border-left: 4px solid #ef4444; color: #f9a8a8;
-        }
-        .hub-admin {
-            background: #2a2312; border: 1px solid #423518; border-left: 4px solid #d97706; color: #f5d0a1;
-        }
-        .system-alert-item {
-            font-size: 0.82rem; background: rgba(239, 68, 68, 0.2); padding: 3px 6px; border-radius: 4px; margin-top: 4px; font-weight: 500;
-        }
-
-        .search-filter-bar {
-            display: grid;
-            grid-template-columns: 3fr 2fr;
-            gap: 8px;
-            margin-bottom: 12px;
-            background: #121212;
-            padding: 8px;
-            border-radius: 6px;
-            border: 1px solid #222;
-        }
-        .search-filter-bar input, .search-filter-bar select {
-            padding: 6px 10px; font-size: 0.85rem; height: 34px; color: #fff; background: #222;
-        }
-
-        /* FLOATING ACTION UTILITIES */
-        .floating-gear-trigger {
-            position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background-color: #333; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer; z-index: 9999; user-select: none; border: 1px solid #444;
-        }
-        .floating-media-trigger {
-            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: #ea580c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer; z-index: 9998; user-select: none;
-        }
-        .floating-media-window {
-            position: fixed; bottom: 85px; right: 20px; width: 310px; max-height: 400px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); z-index: 10000; overflow-y: auto; display: flex; flex-direction: column;
-        }
-        .media-window-header { background: #222; padding: 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .media-window-body { padding: 15px; text-align: center; }
-        .media-window-body img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); background: #1e1e1e; }
-
-        /* GATEWAY OVERLAY MODAL */
-        .gateway-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 20000; padding: 15px; box-sizing: border-box;
-        }
-        .gateway-content {
-            background: #1e1e1e; border-radius: 12px; max-width: 400px; width: 100%; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); border: 1px solid #333;
-        }
-
-        /* EMBEDDED WIDE NOTICE STYLES */
-        .admin-notice-box-wide {
-            width: 100%;
-            max-width: 800px;
-            margin: 5px auto;
-            height: 80px;
-            overflow: hidden;
-            background-color: #121212;
-            border: 2px solid #333;
-            border-radius: 8px;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        .marquee-vertical-container {
-            display: flex;
-            flex-direction: column;
-            animation: scrollUpContinuous 14s linear infinite;
-        }
-        .marquee-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 10px 0;
-        }
-        .marquee-item p {
-            margin: 5px 0;
-            color: #4caf50;
-            font-size: 1rem;
-            font-family: sans-serif;
-        }
-        .marquee-item img {
-            max-height: 40px;
-            width: auto;
-            border-radius: 4px;
-            margin-top: 4px;
-        }
-        @keyframes scrollUpContinuous {
-            0% { transform: translateY(80px); }
-            100% { transform: translateY(-100%); }
-        }
-
-        @media print {
-            body { background: white; color: black; }
-            .card, header, button, input, select, label, .notification-hub-grid, .floating-media-trigger, .floating-media-window, .floating-gear-trigger, #localUpdatePanel { display: none !important; }
-        }
+        .category-btn.active { background: #4caf50; color: black; font-weight: bold; border-color: #4caf50; }
     </style>
 </head>
 <body>
 
-    <div id="so-biz-marketplace" style="width:100%; font-family: sans-serif; background-color: #0b0b0b; color: #ffffff; min-height: 100vh; padding-bottom: 60px;">
+    <div id="so-biz-marketplace" style="width:100%; min-height: 100vh; padding-bottom: 40px;">
 
-        <header style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #121212; border-bottom: 2px solid #222; position: sticky; top: 0; z-index: 100;">
-            <div style="display: flex; align-items: center; gap: 10px;">
+        <header style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #121212; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 100;">
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <div id="soBizIconBtn" style="cursor: pointer; background: #4caf50; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: black; display: flex; align-items: center; gap: 5px;">
                     ⚙️ <span>SO Biz</span>
                 </div>
                 <div>
-                    <h2 style="margin: 0; font-size: 1.1rem; color: #fff;">Welcome to our Marketplace</h2>
-                    <span style="font-size: 0.75rem; color: #888;">Thank you for visiting</span>
+                    <h2 style="margin: 0; font-size: 1.05rem; color: #fff; font-weight: 600;">Welcome to our Marketplace</h2>
+                    <span style="font-size: 0.75rem; color: #777; display: block; margin-top: 1px;">Thank you for visiting</span>
                 </div>
             </div>
             
-            <select id="locationFilter" style="background: #222; color: #fff; border: 1px solid #444; padding: 6px; border-radius: 4px; font-size: 0.85rem;">
-                <option value="all">🌍 Global (All Locations)</option>
-                <option value="local">📍 Local Region</option>
-                <option value="international">✈️ International Slots</option>
-            </select>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <select id="locationFilter" style="background: #1c1c1c; color: #fff; border: 1px solid #333; padding: 8px; border-radius: 6px; font-size: 0.8rem; cursor: pointer;">
+                    <option value="all">🌍 Global (All)</option>
+                    <option value="local">📍 Local Region</option>
+                    <option value="international">✈️ International</option>
+                </select>
+                
+                <button id="partnerGateTrigger" style="background: #222; border: 1px solid #333; color: #4caf50; padding: 8px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                    🤝 <span>Partner Portal</span>
+                </button>
+            </div>
         </header>
 
-        <div id="globalNotificationHub" class="notification-hub-grid hidden">
-            <div id="hubSystemPanel" class="hub-banner hub-system">
-                <div class="hub-banner-title">⚠️ Stock Alerts</div>
-                <div id="hubSystemText" style="font-size: 0.85rem;">All stock metrics stable.</div>
-            </div>
-            
-            <div id="hubAdminPanel" class="hub-banner hub-admin" style="padding: 5px; background: none; border: none;">
-                <div class="admin-notice-box-wide">
-                    <div class="marquee-vertical-container" id="noticeMarqueeContainer">
-                        <div class="marquee-item">
-                            <p>⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Partners active.</p>
-                        </div>
-                    </div>
+        <div style="background: #161616; border-bottom: 1px solid #222; padding: 10px 20px; font-size: 0.85rem; color: #ffeb3b;">
+            <div id="noticeMarqueeContainer">
+                <div class="marquee-item">
+                    <p>⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Marketplace active globally.</p>
                 </div>
-                <div id="hubAdminText" class="hidden"></div>
             </div>
         </div>
 
-        <main id="customerScreen" style="padding: 15px; max-width: 800px; margin: 0 auto;">
+        <main id="customerScreen" style="padding: 20px 15px; max-width: 650px; margin: 0 auto;">
             
             <section style="margin-bottom: 25px;">
-                <h3 style="color: #4caf50; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 10px;">🔥 Top Patronized Shops</h3>
-                <div id="topShopsRow" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin;">
+                <h3 style="color: #4caf50; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">🔥 Top Patronized Shops</h3>
+                <div id="topShopsRow" class="no-scrollbar" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 5px;">
                     </div>
             </section>
 
-            <nav style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 25px;">
-                <button class="category-btn" data-cat="all" style="background:#4caf50; color:black; font-weight:bold; padding:12px; border:none; border-radius:6px; cursor:pointer;">All Trades</button>
-                <button class="category-btn" data-cat="Fashion" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Fashion & Apparel</button>
-                <button class="category-btn" data-cat="Technical" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Engineering & Tech</button>
-                <button class="category-btn" data-cat="Supermarket" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Supermarkets</button>
-                <button class="category-btn" data-cat="Petty" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Petty Shops & Retail</button>
+            <nav style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 25px;">
+                <button class="category-btn active" data-cat="all">All Trades</button>
+                <button class="category-btn" data-cat="Fashion">Fashion & Apparel</button>
+                <button class="category-btn" data-cat="Technical">Engineering & Tech</button>
+                <button class="category-btn" data-cat="Supermarket">Supermarkets</button>
             </nav>
 
-            <section id="shopDirectorySection" style="margin-bottom: 25px;">
-                <h3 style="color: #888; font-size: 0.95rem; margin-bottom: 10px;">Browse Collections</h3>
-                <div id="shopDirectoryGrid" style="display: flex; flex-direction: column; gap: 15px;">
+            <section style="margin-bottom: 30px;">
+                <div id="shopDirectoryGrid" style="display: flex; flex-direction: column; gap: 12px;">
                     </div>
             </section>
 
-            <section style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
-                <h3 style="color: #ffeb3b; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 10px;">🎲 Random Explorer Discovery</h3>
+            <section style="border-top: 1px solid #222; padding-top: 20px;">
+                <h3 style="color: #ffeb3b; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">🎲 Random Explorer Discovery</h3>
                 <div id="randomExplorerGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
                     </div>
             </section>
         </main>
 
-        <div id="unifiedStorefrontView" style="display: none; padding: 15px; max-width: 800px; margin: 0 auto;">
-            <button id="backToMarketplaceBtn" style="background: none; border: 1px solid #444; color: #aaa; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-bottom: 15px;">⬅️ Back to Directory</button>
-            
-            <div id="storefrontContentWindow" style="background: #121212; border: 2px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+        <div id="unifiedStorefrontView" style="display: none; padding: 20px 15px; max-width: 650px; margin: 0 auto;">
+            <button id="backToMarketplaceBtn" style="background: #1c1c1c; border: 1px solid #333; color: #aaa; padding: 8px 16px; border-radius: 6px; cursor: pointer; margin-bottom: 20px; font-size: 0.85rem; font-weight: bold;">⬅️ Back to Directory</button>
+            <div id="storefrontContentWindow" style="background: #121212; border: 1px solid #222; border-radius: 12px; padding: 25px; text-align: center;">
                 </div>
         </div>
 
-        <div id="workspace" class="container hidden">
-            <div class="card" style="padding: 10px; display: flex; gap: 6px; background: var(--card-bg); border-bottom: 2px solid var(--primary); margin-bottom: 15px; overflow-x: auto;">
-                <button onclick="switchPartnerView('stock')" style="margin:0; background-color: var(--primary); color: black; position: relative; white-space: nowrap;">
-                    📦 View Stock
-                    <span id="lowStockBadge" style="display:none; position: absolute; top: -5px; right: -5px; background: var(--alert); color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; font-weight: bold;">0</span>
-                </button>
-                <button onclick="switchPartnerView('sales')" style="margin:0; background-color: #0284c7; color: white; white-space: nowrap;">📝 Log Sale</button>
-                <button onclick="switchPartnerView('audit')" style="margin:0; background-color: #475569; color: white; white-space: nowrap;">📊 Metrics</button>
-                <button onclick="switchPartnerView('support')" style="margin:0; background-color: #be123c; color: white; white-space: nowrap;">🤫 Report Issue</button>
-            </div>
-
-            <div id="moduleStockView" class="card module-view">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <h3>My Active Stock Ledger</h3>
-                    <button onclick="toggleStockForm()" id="btnToggleForm" style="width: auto; margin: 0; padding: 6px 12px; font-size: 0.85rem; background-color: #64748b; color: white;">+ Add New Item</button>
-                </div>
-
-                <div class="search-filter-bar">
-                    <input type="text" id="stockSearchInput" placeholder="🔍 Search product name..." oninput="renderInventory()">
-                    <select id="stockSortSelect" onchange="renderInventory()">
-                        <option value="default">Sort: Date Added</option>
-                        <option value="alpha">Sort: A-Z Alpha</option>
-                        <option value="qtyDesc">Sort: Qty (High-Low)</option>
-                        <option value="qtyAsc">Sort: Qty (Low-High)</option>
-                        <option value="lowAlert">Sort: ⚠️ Low Alerts First</option>
-                    </select>
-                </div>
-
-                <div id="stockEntryForm" class="hidden" style="background: #1a1a1a; padding: 12px; border-radius: 6px; border: 1px dashed #444; margin-bottom: 15px;">
-                    <input type="hidden" id="editItemIndex" value="">
-                    <div class="form-group">
-                        <label>Product Name</label>
-                        <input type="text" id="prodName" placeholder="e.g. Flour Bag">
-                    </div>
-                    <div class="grid-3">
-                        <div class="form-group">
-                            <label>Qty</label>
-                            <input type="number" id="prodQty" placeholder="10">
-                        </div>
-                        <div class="form-group">
-                            <label>Cost (₦)</label>
-                            <input type="number" id="prodCost" placeholder="4000">
-                        </div>
-                        <div class="form-group">
-                            <label>Retail (₦)</label>
-                            <input type="number" id="prodRetail" placeholder="5500">
-                        </div>
-                    </div>
-                    <div class="grid-3" style="grid-template-columns: 1fr 2fr; width:100%;">
-                        <div class="form-group">
-                            <label>Low Alert Limit</label>
-                            <input type="number" id="prodAlert" placeholder="3" value="3">
-                        </div>
-                        <div class="form-group">
-                            <label>Batch Memo</label>
-                            <textarea id="prodMemo" placeholder="Supplier notes..."></textarea>
-                        </div>
-                    </div>
-                    <button id="btnSaveStock" onclick="addStockItem()" style="background-color: var(--success); color: white;">Save to My Inventory</button>
-                </div>
-                
-                <div id="stockList" style="border-top:1px solid var(--border);"></div>
-            </div>
-
-            <div id="moduleSalesView" class="card module-view hidden">
-                <h3>Log Current Transaction</h3>
-                <div class="form-group" style="background: #1a1a1a; padding: 8px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #333;">
-                    <label for="salesSearchInput" style="color: #aaa; font-size: 0.85rem;">🔍 Quick Find Item</label>
-                    <input type="text" id="salesSearchInput" placeholder="Type product name to filter dropdown..." oninput="populateSalesDropdown()" style="padding: 6px 10px; height: 34px; background: #222; color: #fff;">
-                </div>
-                <div class="form-group">
-                    <label>Select Item to Sell</label>
-                    <select id="salesItemDropdown"></select>
-                </div>
-                <div class="grid-3" style="grid-template-columns: 1fr 1fr;">
-                    <div class="form-group">
-                        <label>Quantity Sold</label>
-                        <input type="number" id="salesQty" value="1">
-                    </div>
-                    <div class="form-group">
-                        <label>Transaction Date</label>
-                        <input type="date" id="salesDate">
-                    </div>
-                </div>
-                <button onclick="registerPartnerSale()" style="background-color: #0284c7; color: white;">Process & Register Sale</button>
-            </div>
-
-            <div id="moduleAuditView" class="card module-view hidden">
-                <div style="margin-bottom: 25px;">
-                    <h3>Dynamic Accounting Audit</h3>
-                    <div class="date-grid">
-                        <div class="form-group">
-                            <label>From Date</label>
-                            <input type="date" id="startDate">
-                        </div>
-                        <div class="form-group">
-                            <label>To Date</label>
-                            <input type="date" id="endDate">
-                        </div>
-                    </div>
-                    <button onclick="runLocalAudit()" style="background-color: #475569; color: white;">Process Range Audit</button>
-                    <div id="auditOutput" style="margin-top:12px; font-size:0.95rem;"></div>
-                </div>
-
-                <div style="border-top: 1px solid var(--border); padding-top: 20px; margin-bottom: 20px;">
-                    <h3>Credit & Debt Ledger</h3>
-                    <div class="form-group">
-                        <label>Profile/Name</label>
-                        <input type="text" id="ledgerName" placeholder="e.g. Supplier Name">
-                    </div>
-                    <div class="grid-3" style="grid-template-columns: 1fr 1fr;">
-                        <div class="form-group">
-                            <label>Amount (₦)</label>
-                            <input type="number" id="ledgerAmount" placeholder="15000">
-                        </div>
-                        <div class="form-group">
-                            <label>Due Date</label>
-                            <input type="date" id="ledgerDueDate">
-                        </div>
-                    </div>
-                    <div class="date-grid">
-                        <button onclick="addLedgerEntry('IOwe')" style="background-color: #555; color: white;">I Owe</button>
-                        <button onclick="addLedgerEntry('TheyOwe')" style="background-color: #ea580c; color: white;">They Owe</button>
-                    </div>
-                    <div style="margin-top:20px; display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
-                        <div>
-                            <strong>I OWE</strong>
-                            <div id="iOweList" style="font-size:0.85rem; margin-top:5px; color: #ff9494;"></div>
-                        </div>
-                        <div>
-                            <strong>THEY OWE</strong>
-                            <div id="theyOweList" style="font-size:0.85rem; margin-top:5px; color: #a3e635;"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div style="border-top: 1px solid var(--border); padding-top: 15px; text-align: center;">
-                    <button onclick="exportPartnerBackup()" style="background-color: #222; border: 1px solid #444; color: white; font-size:0.85rem; width: auto; padding: 8px 15px;">📥 Backup Data</button>
-                </div>
-            </div>
-
-            <div id="moduleSupportView" class="card module-view hidden">
-                <h3>🤫 Private Support Desk</h3>
-                <p style="font-size:0.85rem; color:#888; margin-top:-8px;">Log discrepancy issues or data disputes directly with management here.</p>
-                <div class="form-group">
-                    <label>Select Category</label>
-                    <select id="complaintCategory">
-                        <option value="Inventory Shortage Discrepancy">📦 Inventory Discrepancy</option>
-                        <option value="Cash/Accounting Error">💰 Payment/Cash Error</option>
-                        <option value="System Technical Bug">⚡ App Bug/Technical Issue</option>
-                        <option value="General Dispute Memo">📝 General Inquiry</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Detailed Message Explanation</label>
-                    <textarea id="complaintText" placeholder="Describe the exact discrepancy item, numbers, or corrections needed..."></textarea>
-                </div>
-                <button onclick="submitPartnerComplaint()" style="background-color: #be123c; color: white;">File Discrepancy Record</button>
-            </div>
-
-            <div id="adminPanelCard" class="card hidden" style="border-top: 3px solid #4caf50; margin-top: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <h3 style="margin:0; color: #4caf50;">Administrative Control Dashboard</h3>
-                    <button onclick="document.getElementById('adminPanelCard').classList.add('hidden')" style="width:auto; margin:0; padding:4px 10px; background:#444; font-size:0.8rem; color: white;">Close Admin</button>
-                </div>
-
-                <div class="form-group">
-                    <h4 style="margin-bottom: 8px;">📥 Partner Discrepancy Box</h4>
-                    <div id="adminComplaintInboxList" style="max-height: 240px; overflow-y: auto; padding: 2px;"></div>
-                </div>
-                
-                <div class="form-group" style="background: #1a1a1a; padding: 10px; border-radius: 6px; border: 1px solid #333; margin-bottom: 12px;">
-                    <label style="color:#d97706; font-weight: bold;">Broadcast Header Announcement</label>
-                    <input type="text" id="adminBulletinInput" placeholder="Type text alert info here...">
-                    <button onclick="publishAdminAnnouncement()" style="background-color: #d97706; color: white; font-size:0.85rem; padding:6px; margin-top:5px;">Push Notice Live</button>
-                </div>
-
-                <div class="form-group" style="background: #1a1a1a; padding: 10px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px;">
-                    <label style="color:#2563eb; font-weight: bold;">Update Floating Showcase Board</label>
-                    <input type="text" id="adminMediaTitle" placeholder="Headline" style="margin-bottom: 5px;">
-                    <input type="text" id="adminMediaDesc" placeholder="Description text" style="margin-bottom: 5px;">
-                    <div style="border: 1px solid #444; border-radius: 6px; padding: 8px; background: #222; margin-bottom: 5px;">
-                        <input type="file" id="adminLocalFileSelector" accept="image/*" onchange="handleLocalFileLoad(this)" style="border:none; padding: 4px 0; background: transparent;">
-                    </div>
-                    <input type="text" id="adminMediaUrl" placeholder="Or paste web image address link">
-                    <button onclick="publishAdminMediaBoard()" style="background-color: #2563eb; color: white; font-size:0.9rem; padding:10px; margin-top:10px;">Deploy Media Live</button>
-                </div>
-
-                <div class="grid-3" style="margin-bottom: 15px;">
-                    <div style="background: #222; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #333;">
-                        <small style="color: #888; display: block;">Local DB Size</small>
-                        <div id="adminDbCount" style="font-weight: bold; font-size: 1.1rem; color: #fff;">0 Entries</div>
-                    </div>
-                    <div style="background: #222; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #333;">
-                        <small style="color: #888; display: block;">Active Rules</small>
-                        <div style="font-weight: bold; font-size: 1.1rem; color: #fff;">Central</div>
-                    </div>
-                    <div style="background: #222; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #333;">
-                        <small style="color: #888; display: block;">Sync Status</small>
-                        <div id="adminSyncStatus" style="font-weight: bold; font-size: 0.95rem; color: #16a34a;">Standby</div>
-                    </div>
-                </div>
-
-                <div class="date-grid" style="grid-template-columns: 2fr 1fr; gap: 8px;">
-                    <button onclick="triggerRemoteDataSync()" style="background-color: #444; color: white; margin-top: 0;">Simulate Sync</button>
-                    <button onclick="purgeSystemData()" style="background-color: var(--alert); color: white; margin-top: 0;">Purge Cache</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="partnerDashboardView" style="display: none; padding: 15px; max-width: 800px; margin: 0 auto;">
-            <div style="background: #1a237e; border: 1px solid #3f51b5; padding: 15px; border-radius: 6px; margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center;">
+        <div id="partnerDashboardView" style="display: none; padding: 20px 15px; max-width: 650px; margin: 0 auto;">
+            <div style="background: #112244; border: 1px solid #1f3a60; padding: 15px; border-radius: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                    <h3 id="dashPartnerName" style="margin: 0; color: white;">Partner Active Slot</h3>
-                    <span style="font-size:0.8rem; color: #bcdee2;">Session Secured Globally</span>
+                    <h3 id="dashPartnerName" style="margin: 0; color: white; font-size: 1.1rem;">Partner Workspace</h3>
+                    <span style="font-size:0.75rem; color: #8ab4f8;">Session secured automatically</span>
                 </div>
-                <button id="manualLogoutBtn" style="background: #f44336; border:none; color:white; padding:6px 12px; border-radius:4px; cursor:pointer;">Exit Workspace</button>
+                <button id="manualLogoutBtn" style="background: #ea4335; border: none; color: white; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem;">Exit Dashboard</button>
             </div>
-            <div style="background:#121212; padding:20px; border-radius:8px; border:1px solid #333;">
-                <p>📋 <strong>Status Report:</strong> Your centralized storefront information is active and managed globally by the Master Administrator.</p>
-                <div id="partnerSlotDetails"></div>
+            <div style="background: #121212; padding: 20px; border-radius: 8px; border: 1px solid #222;">
+                <p style="font-size: 0.9rem; color: #ccc; line-height: 1.4;">📋 Your live listing details are actively locked and maintained by the Master Administrator. Changes reflect worldwide instantly upon deployment updates.</p>
+                <div id="partnerSlotDetails" style="margin-top: 15px;"></div>
             </div>
         </div>
 
-        <footer style="text-align: center; padding: 20px 0; border-top: 1px solid #1a1a1a; margin-top: 40px;">
-            <span id="partnerGateTrigger" style="font-size: 0.75rem; color: #333; cursor: pointer;">Partner Portal</span>
-        </footer>
-        
-        <div id="partnerLoginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000;">
-            <div style="background: #1e1e1e; padding: 25px; border-radius: 8px; width: 90%; max-width: 360px; border: 1px solid #4caf50;">
-                <h3 style="color: #4caf50; margin-top: 0;">Partner Verification</h3>
-                <label style="display:block; margin: 10px 0 5px; font-size:0.85rem;">Business Identifier:</label>
-                <input type="text" id="partnerIdInput" style="width:100%; padding:8px; background:#333; border:1px solid #555; color:white; border-radius:4px;" placeholder="Enter assigned partner ID">
-                <button id="submitPartnerLogin" style="margin-top: 15px; width: 100%; padding: 10px; background: #4caf50; color: black; border: none; font-weight: bold; border-radius: 4px; cursor: pointer;">Access Workspace</button>
-                <button id="closePartnerLogin" style="margin-top: 5px; width: 100%; padding: 8px; background: transparent; color: #888; border: none; cursor: pointer; font-size:0.85rem;">Cancel</button>
+        <div id="partnerLoginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); justify-content: center; align-items: center; z-index: 1000; padding: 20px;">
+            <div style="background: #1a1a1a; padding: 25px; border-radius: 12px; width: 100%; max-width: 340px; border: 1px solid #333;">
+                <h3 style="color: #4caf50; margin-bottom: 15px; font-size: 1.2rem;">Partner Verification</h3>
+                <label style="display: block; margin-bottom: 6px; font-size: 0.8rem; color: #aaa;">Business Slot Identifier:</label>
+                <input type="text" id="partnerIdInput" style="width: 100%; padding: 10px; background: #262626; border: 1px solid #444; color: white; border-radius: 6px; font-size: 0.9rem; margin-bottom: 15px;" placeholder="Enter assigned partner code">
+                <button id="submitPartnerLogin" style="width: 100%; padding: 12px; background: #4caf50; color: black; border: none; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 0.9rem;">Access Slot</button>
+                <button id="closePartnerLogin" style="width: 100%; padding: 8px; background: transparent; color: #666; border: none; cursor: pointer; font-size: 0.8rem; margin-top: 8px;">Cancel</button>
             </div>
         </div>
 
-        <div id="staffEntranceModal" class="gateway-modal hidden">
-            <div class="gateway-content">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                    <h3 style="margin:0; font-size:1.15rem; color:#fff;">Staff Portal Gateway</h3>
-                    <button onclick="closeStaffModal()" style="width:auto; margin:0; padding:2px 8px; background:#444; color: white; font-size:0.8rem;">✕</button>
-                </div>
-                <div style="background:#222; padding:12px; border-radius:6px; border:1px solid #333; margin-bottom:15px;">
-                    <label style="font-weight:700; font-size:0.85rem; margin-bottom:6px; display:block; color:#aaa;">LEGACY PROFILE WORKSPACE</label>
-                    <select id="modalBizTier" style="margin-bottom:8px; background:#333; color: white;">
-                        <option value="Artisan">Artisan Stream</option>
-                        <option value="Petty Trader">Petty Trader</option>
-                        <option value="Supermarket">Supermarket</option>
-                    </select>
-                    <button onclick="saveModalSetupProfile()" style="background-color:#4caf50; color: black; margin:0;">Enter Panel</button>
-                </div>
-                <div style="border-top:1px dashed #444; padding-top:12px;">
-                    <label style="font-weight:700; font-size:0.85rem; margin-bottom:6px; display:block; color:#ef4444;">ADMINISTRATIVE AREA</label>
-                    <button onclick="triggerModalAdminAuth()" style="background-color:#444; color: white; margin:0;">Unlock Admin Console 🔐</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="staffPanelFabButton" class="floating-gear-trigger" onclick="openStaffModal()" title="Open Staff Gateway Panel">⚙️</div>
-        
-        <div id="mediaFabButton" class="floating-media-trigger hidden" onclick="toggleFloatingMediaWindow()">📢</div>
-        <div id="floatingMediaWindow" class="floating-media-window hidden">
-            <div class="media-window-header">
-                <strong id="mediaTitle" style="color:#fff; font-size:0.95rem;">Network Hub</strong>
-                <button onclick="toggleFloatingMediaWindow()" style="width:auto; margin:0; padding:4px 10px; background:#444; color: white; font-size:0.8rem; border-radius:4px;">✕</button>
-            </div>
-            <div class="media-window-body">
-                <p id="mediaDescription" style="margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.3;"></p>
-                <div id="mediaContainer"></div>
-            </div>
+        <div id="localAdminPanel" style="display: none; background: #1e1e1e; border: 2px dashed #ffeb3b; padding: 20px; margin: 40px auto; max-width: 650px; border-radius: 10px; color: white;">
+            <h3 style="color: #ffeb3b; margin-bottom: 5px;">👑 Master Administration Bench</h3>
+            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 15px;">Configure global notice elements locally.</p>
+            
+            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">Notice Text:</label>
+            <input type="text" id="newNoticeText" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:12px;">
+            
+            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">GIF URL Link:</label>
+            <input type="text" id="newNoticeGIF" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:15px;" placeholder="Paste .gif or webp URL link here">
+            
+            <button id="generateCodeBtn" style="background:#ffeb3b; color:black; border:none; padding:12px; cursor:pointer; border-radius:6px; font-weight:bold; width:100%;">Generate Update Structure</button>
         </div>
 
     </div>
 
-    <script src="app.js"></script>
-
     <script>
-        if (window.location.hostname === "localhost" || window.location.protocol === "file:") {
-            document.body.insertAdjacentHTML('beforeend', `
-                <div id="localUpdatePanel" style="display: block; background: #1e1e1e; border: 2px dashed #4caf50; padding: 20px; margin: 40px auto; max-width: 600px; border-radius: 8px; font-family: sans-serif; color: white;">
-                    <h3 style="color: #4caf50; margin-top:0;">Local Update Dashboard</h3>
-                    <p style="font-size: 0.85rem; color: #aaa;">Type your daily routine updates below.</p>
-                    
-                    <label style="display:block; margin: 10px 0 5px;">Daily Notice Text:</label>
-                    <input type="text" id="newNoticeText" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #555; border-radius:4px;" placeholder="e.g., System sync complete. Partners active.">
-                    
-                    <label style="display:block; margin: 10px 0 5px;">GIF or Image File Name (with extension like .gif):</label>
-                    <input type="text" id="newNoticeGIF" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #555; border-radius:4px;" placeholder="e.g., update-animation.gif">
-                    
-                    <button id="applyNoticeBtn" style="margin-top:15px; background:#4caf50; color:black; border:none; padding:10px 15px; cursor:pointer; border-radius:4px; font-weight:bold; width:100%;">
-                        Generate Update Code
-                    </button>
-                    
-                    <div id="codeOutputArea" style="display:none; margin-top:15px;">
-                        <label style="display:block; margin: 10px 0 5px; color: #ffeb3b;">Copy this code block:</label>
-                        <textarea id="generatedCodeBox" style="width:100%; height:80px; background:#000; color:#4caf50; font-family:monospace; padding:8px; border:1px solid #4caf50;" readonly></textarea>
-                        <p style="font-size: 0.8rem; color: #aaa; margin-top:5px;">👉 Paste this into your Notepad file right inside the <code>&lt;div class="marquee-vertical-container" id="noticeMarqueeContainer"&gt;</code> block, save the file, and push!</p>
-                    </div>
-                </div>
-            `);
+        // GLOBAL REGISTRY (Hardcoded database for bulletproof device sync)
+        const GLOBAL_SHOP_REGISTRY = [
+            {
+                id: "P001",
+                name: "Express Artisan Workshop",
+                category: "Technical",
+                location: "local",
+                patronizedCount: 340,
+                motto: "Precision engineering, fabrication, and rapid custom technical repairs.",
+                image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300",
+                gif: "",
+                products: [{ name: "Custom Tool Fitting", price: "Arranged", img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150" }]
+            },
+            {
+                id: "P002",
+                name: "Vanguard Threads & Tailoring",
+                category: "Fashion",
+                location: "international",
+                patronizedCount: 290,
+                motto: "Premium bespoke couture framing global design and high fashion trends.",
+                image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=300",
+                gif: "",
+                products: [{ name: "Bespoke Suit Set", price: "Fixed Tier", img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=150" }]
+            },
+            {
+                id: "P003",
+                name: "Metro Provision Supermarket",
+                category: "Supermarket",
+                location: "local",
+                patronizedCount: 180,
+                motto: "Consolidated quality household provisions and daily essential goods.",
+                image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=300",
+                gif: "",
+                products: [{ name: "Provisions Pack Box", price: "Calculated", img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=150" }]
+            }
+        ];
 
-            document.getElementById('applyNoticeBtn').addEventListener('click', () => {
-                const textValue = document.getElementById('newNoticeText').value || "System sync complete. Partners active.";
-                const gifValue = document.getElementById('newNoticeGIF').value;
-                
-                let gifHTML = gifValue ? `<img src="${gifValue}" alt="Notice Update Asset">` : '';
-                const blockCode = \`<div class="marquee-item">\\n    <p>⚠️ <strong>DAILY ROUTINE:</strong> \${textValue}</p>\\n    \${gifHTML}\\n</div>\`;
-                
-                document.getElementById('generatedCodeBox').value = blockCode;
-                document.getElementById('codeOutputArea').style.display = 'block';
-                document.getElementById('noticeMarqueeContainer').innerHTML = blockCode;
+        let activeSession = null;
+        let logoutTimer = null;
+
+        // Startup Initializer
+        document.addEventListener("DOMContentLoaded", () => {
+            renderMarketplace("all", "all");
+            initListeners();
+            
+            // Safety Check: Reveal control bench ONLY on your local machine workspace
+            if (window.location.hostname === "localhost" || window.location.protocol === "file:") {
+                document.getElementById("localAdminPanel").style.display = "block";
+            }
+        });
+
+        // Main Rendering Machine
+        function renderMarketplace(catFilter = "all", locFilter = "all") {
+            const topRow = document.getElementById("topShopsRow");
+            const mainGrid = document.getElementById("shopDirectoryGrid");
+            const randomGrid = document.getElementById("randomExplorerGrid");
+
+            if(!topRow || !mainGrid || !randomGrid) return;
+
+            topRow.innerHTML = "";
+            mainGrid.innerHTML = "";
+            randomGrid.innerHTML = "";
+
+            // 1. Render Top Row
+            const sortedShops = [...GLOBAL_SHOP_REGISTRY].sort((a,b) => b.patronizedCount - a.patronizedCount);
+            sortedShops.forEach(shop => {
+                topRow.insertAdjacentHTML('beforeend', `
+                    <div onclick="viewProfile('${shop.id}')" style="min-width: 120px; background: #121212; padding: 12px; border-radius: 10px; border: 1px solid #222; text-align: center; cursor: pointer; flex-shrink: 0;">
+                        <div style="width: 45px; height: 45px; background-image: url('${shop.image}'); background-size: cover; background-position: center; border-radius: 50%; margin: 0 auto 8px; border: 1px solid #333;"></div>
+                        <div style="font-size: 0.75rem; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff;">${shop.name}</div>
+                        <div style="font-size: 0.65rem; color: #4caf50; margin-top: 3px;">⭐ Top Pick</div>
+                    </div>
+                `);
             });
+
+            // 2. Render Screen Directory
+            GLOBAL_SHOP_REGISTRY.forEach(shop => {
+                if (catFilter !== "all" && shop.category !== catFilter) return;
+                if (locFilter !== "all" && shop.location !== locFilter) return;
+
+                mainGrid.insertAdjacentHTML('beforeend', `
+                    <div onclick="viewProfile('${shop.id}')" style="background: #121212; border: 1px solid #222; border-radius: 10px; padding: 14px; display: flex; gap: 14px; align-items: center; cursor: pointer;">
+                        <img src="${shop.image}" style="width: 65px; height: 65px; object-fit: cover; border-radius: 8px; border:1px solid #222;" alt="">
+                        <div style="flex-grow: 1; min-width: 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                                <h4 style="margin: 0; font-size: 0.95rem; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${shop.name}</h4>
+                                <span style="font-size: 0.65rem; background: #222; padding: 3px 6px; border-radius: 4px; color: #aaa; font-weight: bold; flex-shrink: 0;">${shop.category}</span>
+                            </div>
+                            <p style="margin: 5px 0 0; font-size: 0.8rem; color: #999; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${shop.motto}</p>
+                        </div>
+                    </div>
+                `);
+            });
+
+            // 3. Render Shuffled Explorer Box
+            let pooledProducts = [];
+            GLOBAL_SHOP_REGISTRY.forEach(s => s.products.forEach(p => pooledProducts.push({...p, ownerId: s.id, ownerName: s.name})));
+            pooledProducts.sort(() => 0.5 - Math.random());
+            
+            pooledProducts.slice(0, 2).forEach(item => {
+                randomGrid.insertAdjacentHTML('beforeend', `
+                    <div onclick="viewProfile('${item.ownerId}')" style="background: #121212; border: 1px solid #222; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer;">
+                        <img src="${item.img}" style="width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:6px;">
+                        <div style="font-size: 0.8rem; font-weight: bold; color: #fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item.name}</div>
+                        <div style="font-size: 0.7rem; color: #666; margin-top:4px; border-top: 1px solid #222; padding-top:4px;">🏪 ${item.ownerName}</div>
+                    </div>
+                `);
+            });
+        }
+
+        // Profile Display View Changes
+        function viewProfile(shopId) {
+            const shop = GLOBAL_SHOP_REGISTRY.find(s => s.id === shopId);
+            if (!shop) return;
+
+            let visualAsset = shop.gif 
+                ? `<img src="${shop.gif}" style="max-width: 100%; border-radius: 8px; margin: 15px 0;">`
+                : `<img src="${shop.image}" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin: 15px 0; border: 1px solid #222;">`;
+
+            document.getElementById("storefrontContentWindow").innerHTML = `
+                <span style="font-size: 0.7rem; color: #4caf50; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Verified Standard Display</span>
+                <h2 style="margin: 8px 0 4px; font-size: 1.4rem; color: #fff;">${shop.name}</h2>
+                <p style="color: #666; font-size: 0.8rem; margin-bottom: 15px;">Operational Frame: [${shop.location.toUpperCase()}]</p>
+                <p style="font-size: 0.9rem; color: #ccc; line-height: 1.4; font-style: italic;">"${shop.motto}"</p>
+                
+                ${visualAsset}
+                
+                <div style="text-align: left; margin-top: 20px;">
+                    <h5 style="color: #aaa; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px;">Item Catalogs</h5>
+                    ${shop.products.map(p => `
+                        <div style="background: #1a1a1a; padding: 10px; border-radius: 8px; display: flex; gap: 10px; align-items: center; border: 1px solid #222;">
+                            <img src="${p.img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                            <div style="font-size:0.85rem; font-weight:500; color:#fff;">${p.name}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            document.getElementById("customerScreen").style.display = "none";
+            document.getElementById("partnerDashboardView").style.display = "none";
+            document.getElementById("unifiedStorefrontView").style.display = "block";
+        }
+
+        function exitToDirectory() {
+            document.getElementById("unifiedStorefrontView").style.display = "none";
+            document.getElementById("partnerDashboardView").style.display = "none";
+            document.getElementById("customerScreen").style.display = "block";
+        }
+
+        // Secure Session Guard Handling
+        function startSession(partner) {
+            activeSession = partner;
+            document.getElementById("dashPartnerName").innerText = partner.name;
+            document.getElementById("partnerSlotDetails").innerHTML = `
+                <div style="font-size: 0.85rem; color: #aaa; display: flex; flex-direction: column; gap: 8px;">
+                    <div><strong>Trade Classification:</strong> ${partner.category}</div>
+                    <div><strong>Activity Score:</strong> ${partner.patronizedCount} Interactions</div>
+                    <div><strong>Registered Region:</strong> ${partner.location.toUpperCase()}</div>
+                </div>
+            `;
+            document.getElementById("customerScreen").style.display = "none";
+            document.getElementById("unifiedStorefrontView").style.display = "none";
+            document.getElementById("partnerDashboardView").style.display = "block";
+            refreshTimeout();
+        }
+
+        function refreshTimeout() {
+            if(logoutTimer) clearTimeout(logoutTimer);
+            logoutTimer = setTimeout(() => {
+                activeSession = null;
+                exitToDirectory();
+                alert("Session safety lock triggered due to idle period.");
+            }, 15 * 60 * 1000); // Safe 15 min lock out
+        }
+
+        // Operational Hook Setups
+        function initListeners() {
+            document.getElementById("soBizIconBtn").addEventListener('click', exitToDirectory);
+            document.getElementById("backToMarketplaceBtn").addEventListener('click', exitToDirectory);
+            document.getElementById("manualLogoutBtn").addEventListener('click', () => { activeSession = null; exitToDirectory(); });
+
+            window.addEventListener('mousemove', () => { if(activeSession) refreshTimeout(); });
+            window.addEventListener('keydown', () => { if(activeSession) refreshTimeout(); });
+
+            // Category filter switches
+            const catButtons = document.querySelectorAll(".category-btn");
+            catButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    catButtons.forEach(b => b.classList.remove("active"));
+                    e.target.classList.add("active");
+                    renderMarketplace(e.target.getAttribute("data-cat"), document.getElementById("locationFilter").value);
+                });
+            });
+
+            // Location filter actions
+            document.getElementById("locationFilter").addEventListener('change', (e) => {
+                const activeBtn = document.querySelector(".category-btn.active");
+                renderMarketplace(activeBtn ? activeBtn.getAttribute("data-cat") : "all", e.target.value);
+            });
+
+            // Modal Controls
+            document.getElementById("partnerGateTrigger").addEventListener('click', () => { document.getElementById("partnerLoginModal").style.display = "flex"; });
+            document.getElementById("closePartnerLogin").addEventListener('click', () => { document.getElementById("partnerLoginModal").style.display = "none"; });
+            
+            document.getElementById("submitPartnerLogin").addEventListener('click', () => {
+                const val = document.getElementById("partnerIdInput").value.trim();
+                const matched = GLOBAL_SHOP_REGISTRY.find(p => p.id === val);
+                if(matched) {
+                    document.getElementById("partnerLoginModal").style.display = "none";
+                    document.getElementById("partnerIdInput").value = "";
+                    startSession(matched);
+                } else {
+                    alert("Invalid registration key code.");
+                }
+            });
+
+            // Admin configuration helper actions
+            const genBtn = document.getElementById("generateCodeBtn");
+            if (genBtn) {
+                genBtn.addEventListener('click', () => {
+                    const txt = document.getElementById("newNoticeText").value || "Marketplace active globally.";
+                    const gifUrl = document.getElementById("newNoticeGIF").value;
+                    let gifImg = gifUrl ? `<br><img src="${gifUrl}" style="max-width:100%; margin-top:8px;" alt="">` : '';
+                    
+                    // Directly apply locally for zero-lag editing checks
+                    document.getElementById("noticeMarqueeContainer").innerHTML = `<div class="marquee-item"><p>⚠️ <strong>DAILY ROUTINE:</strong> ${txt}</p>${gifImg}</div>`;
+                });
+            }
         }
     </script>
 </body>
