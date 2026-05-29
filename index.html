@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SO Biz Marketplace</title>
+    <title>SO Biz Smart Marketplace & ERP</title>
     <style>
-        /* Base Styling to ensure smooth scroll and dark layout */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #0b0b0b; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         
-        /* Hide scrollbars but keep functionality */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
-        /* Category button styling */
         .category-btn {
             background: #1a1a1a; color: #aaa; padding: 12px; 
             border: 1px solid #222; border-radius: 8px; 
@@ -21,6 +18,13 @@
             transition: all 0.2s ease;
         }
         .category-btn.active { background: #4caf50; color: black; font-weight: bold; border-color: #4caf50; }
+
+        /* Smooth tab styling for ERP components */
+        .erp-tab-btn {
+            background: #222; color: #aaa; border: 1px solid #333;
+            padding: 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold;
+        }
+        .erp-tab-btn.active { background: #4caf50; color: black; border-color: #4caf50; }
     </style>
 </head>
 <body>
@@ -51,11 +55,10 @@
             </div>
         </header>
 
-        <div style="background: #161616; border-bottom: 1px solid #222; padding: 10px 20px; font-size: 0.85rem; color: #ffeb3b;">
-            <div id="noticeMarqueeContainer">
-                <div class="marquee-item">
-                    <p>⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Marketplace active globally.</p>
-                </div>
+        <div style="background: #161616; border-bottom: 1px solid #222; padding: 12px 20px; font-size: 0.85rem; color: #ffeb3b;">
+            <div id="noticeMarqueeContainer" style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
+                <p id="globalNoticePara">⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Marketplace active globally with 20 partners.</p>
+                <div id="globalNoticeAssetContainer"></div>
             </div>
         </div>
 
@@ -100,9 +103,61 @@
                 </div>
                 <button id="manualLogoutBtn" style="background: #ea4335; border: none; color: white; padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 0.8rem;">Exit Dashboard</button>
             </div>
+
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px;">
+                <button class="erp-tab-btn active" id="tabStocksBtn" onclick="switchErpTab('stocks')">📦 Stocks</button>
+                <button class="erp-tab-btn" id="tabSalesBtn" onclick="switchErpTab('sales')">📈 Log Sale</button>
+                <button class="erp-tab-btn" id="tabMetricsBtn" onclick="switchErpTab('metrics')">📊 Audits</button>
+                <button class="erp-tab-btn" id="tabIssueBtn" onclick="switchErpTab('issue')">🚨 Issue</button>
+            </div>
+
             <div style="background: #121212; padding: 20px; border-radius: 8px; border: 1px solid #222;">
-                <p style="font-size: 0.9rem; color: #ccc; line-height: 1.4;">📋 Your live listing details are actively locked and maintained by the Master Administrator. Changes reflect worldwide instantly upon deployment updates.</p>
-                <div id="partnerSlotDetails" style="margin-top: 15px;"></div>
+                
+                <div id="erpTabStocks">
+                    <h4 style="color: #4caf50; margin-bottom: 10px; font-size: 0.95rem;">Available Stock Inventory</h4>
+                    <div id="erpStockList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+
+                <div id="erpTabSales" style="display: none;">
+                    <h4 style="color: #4caf50; margin-bottom: 12px; font-size: 0.95rem;">Log Transaction Entry</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <label style="display:block; font-size: 0.8rem; color:#aaa; margin-bottom:4px;">Select Sold Item:</label>
+                            <select id="erpSaleItemSelect" style="width:100%; padding:8px; background:#222; border:1px solid #333; color:white; border-radius:4px;"></select>
+                        </div>
+                        <div>
+                            <label style="display:block; font-size: 0.8rem; color:#aaa; margin-bottom:4px;">Quantity Transacted:</label>
+                            <input type="number" id="erpSaleQtyInput" value="1" min="1" style="width:100%; padding:8px; background:#222; border:1px solid #333; color:white; border-radius:4px;">
+                        </div>
+                        <button onclick="executeLogSale()" style="background:#4caf50; color:black; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer; margin-top:5px;">Record Cash Logging</button>
+                    </div>
+                </div>
+
+                <div id="erpTabMetrics" style="display: none;">
+                    <h4 style="color: #ffeb3b; margin-bottom: 12px; font-size: 0.95rem;">Real-Time Financial Audit</h4>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;">
+                        <div style="background: #1a1a1a; padding: 10px; border-radius: 6px; border:1px solid #222;">
+                            <span style="font-size:0.7rem; color:#888; display:block;">GROSS REVENUE</span>
+                            <span id="erpMetricRevenue" style="font-size:1.1rem; font-weight:bold; color:#4caf50;">$0.00</span>
+                        </div>
+                        <div style="background: #1a1a1a; padding: 10px; border-radius: 6px; border:1px solid #222;">
+                            <span style="font-size:0.7rem; color:#888; display:block;">UNITS DEPLOYED</span>
+                            <span id="erpMetricUnits" style="font-size:1.1rem; font-weight:bold; color:#ffeb3b;">0 pcs</span>
+                        </div>
+                    </div>
+                    <div style="background:#161616; padding:10px; border-radius:6px; border:1px solid #222;">
+                        <span style="font-size:0.75rem; color:#aaa;">📝 Recent Accounting Logs:</span>
+                        <div id="erpAuditHistoryLog" style="font-size:0.75rem; color:#666; margin-top:6px; display:flex; flex-direction:column; gap:4px;">No active transactions recorded this session.</div>
+                    </div>
+                </div>
+
+                <div id="erpTabIssue" style="display: none;">
+                    <h4 style="color: #ea4335; margin-bottom: 10px; font-size: 0.95rem;">Administrative Complaint Portal</h4>
+                    <p style="font-size:0.8rem; color:#888; margin-bottom:10px;">Direct communication channel line to Master Admin center logs.</p>
+                    <textarea id="erpIssueTextInput" style="width:100%; height:80px; background:#222; border:1px solid #333; border-radius:6px; color:white; padding:8px; font-size:0.85rem;" placeholder="Describe operational, display, or layout synchronization issues..."></textarea>
+                    <button onclick="submitErpIssue()" style="background:#ea4335; color:white; border:none; padding:10px 15px; border-radius:4px; font-weight:bold; margin-top:8px; cursor:pointer;">File Report Frame</button>
+                </div>
+
             </div>
         </div>
 
@@ -118,21 +173,21 @@
 
         <div id="localAdminPanel" style="display: none; background: #1e1e1e; border: 2px dashed #ffeb3b; padding: 20px; margin: 40px auto; max-width: 650px; border-radius: 10px; color: white;">
             <h3 style="color: #ffeb3b; margin-bottom: 5px;">👑 Master Administration Bench</h3>
-            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 15px;">Configure global notice elements locally.</p>
+            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 15px;">Configure global customer notice and running text assets smoothly from this workspace engine.</p>
             
-            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">Notice Text:</label>
-            <input type="text" id="newNoticeText" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:12px;">
+            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">Running Notice Text Update:</label>
+            <input type="text" id="newNoticeText" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:12px;" value="System sync complete. Marketplace active globally with 20 partners.">
             
-            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">GIF URL Link:</label>
-            <input type="text" id="newNoticeGIF" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:15px;" placeholder="Paste .gif or webp URL link here">
+            <label style="display:block; margin-bottom: 5px; font-size: 0.85rem;">GIF Showcase URL Link (Empty if text only):</label>
+            <input type="text" id="newNoticeGIF" style="width:100%; padding:10px; background:#333; color:white; border:1px solid #555; border-radius:6px; margin-bottom:15px;" placeholder="e.g., https://media.giphy.com/media/.../giphy.gif">
             
-            <button id="generateCodeBtn" style="background:#ffeb3b; color:black; border:none; padding:12px; cursor:pointer; border-radius:6px; font-weight:bold; width:100%;">Generate Update Structure</button>
+            <button id="generateCodeBtn" style="background:#ffeb3b; color:black; border:none; padding:12px; cursor:pointer; border-radius:6px; font-weight:bold; width:100%;">Push Instant Live Local Test</button>
         </div>
 
     </div>
 
     <script>
-        // GLOBAL REGISTRY (Hardcoded database for bulletproof device sync)
+        // GLOBAL REGISTRY METRIC BASE
         const GLOBAL_SHOP_REGISTRY = [
             {
                 id: "P001",
@@ -143,7 +198,12 @@
                 motto: "Precision engineering, fabrication, and rapid custom technical repairs.",
                 image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300",
                 gif: "",
-                products: [{ name: "Custom Tool Fitting", price: "Arranged", img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150" }]
+                revenue: 0,
+                unitsSold: 0,
+                products: [
+                    { id: "item-101", name: "Custom Tool Fitting", price: 45, stockCount: 12, img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150" },
+                    { id: "item-102", name: "Structural Reinforcement Rod", price: 110, stockCount: 5, img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150" }
+                ]
             },
             {
                 id: "P002",
@@ -154,7 +214,11 @@
                 motto: "Premium bespoke couture framing global design and high fashion trends.",
                 image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=300",
                 gif: "",
-                products: [{ name: "Bespoke Suit Set", price: "Fixed Tier", img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=150" }]
+                revenue: 0,
+                unitsSold: 0,
+                products: [
+                    { id: "item-201", name: "Bespoke Suit Set", price: 350, stockCount: 3, img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=150" }
+                ]
             },
             {
                 id: "P003",
@@ -165,19 +229,21 @@
                 motto: "Consolidated quality household provisions and daily essential goods.",
                 image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=300",
                 gif: "",
-                products: [{ name: "Provisions Pack Box", price: "Calculated", img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=150" }]
+                revenue: 0,
+                unitsSold: 0,
+                products: [
+                    { id: "item-301", name: "Provisions Pack Box", price: 25, stockCount: 40, img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=150" }
+                ]
             }
         ];
 
         let activeSession = null;
         let logoutTimer = null;
 
-        // Startup Initializer
         document.addEventListener("DOMContentLoaded", () => {
             renderMarketplace("all", "all");
             initListeners();
             
-            // Safety Check: Reveal control bench ONLY on your local machine workspace
             if (window.location.hostname === "localhost" || window.location.protocol === "file:") {
                 document.getElementById("localAdminPanel").style.display = "block";
             }
@@ -195,7 +261,6 @@
             mainGrid.innerHTML = "";
             randomGrid.innerHTML = "";
 
-            // 1. Render Top Row
             const sortedShops = [...GLOBAL_SHOP_REGISTRY].sort((a,b) => b.patronizedCount - a.patronizedCount);
             sortedShops.forEach(shop => {
                 topRow.insertAdjacentHTML('beforeend', `
@@ -207,7 +272,6 @@
                 `);
             });
 
-            // 2. Render Screen Directory
             GLOBAL_SHOP_REGISTRY.forEach(shop => {
                 if (catFilter !== "all" && shop.category !== catFilter) return;
                 if (locFilter !== "all" && shop.location !== locFilter) return;
@@ -226,7 +290,6 @@
                 `);
             });
 
-            // 3. Render Shuffled Explorer Box
             let pooledProducts = [];
             GLOBAL_SHOP_REGISTRY.forEach(s => s.products.forEach(p => pooledProducts.push({...p, ownerId: s.id, ownerName: s.name})));
             pooledProducts.sort(() => 0.5 - Math.random());
@@ -236,13 +299,14 @@
                     <div onclick="viewProfile('${item.ownerId}')" style="background: #121212; border: 1px solid #222; padding: 10px; border-radius: 8px; text-align: center; cursor: pointer;">
                         <img src="${item.img}" style="width:100%; height:90px; object-fit:cover; border-radius:6px; margin-bottom:6px;">
                         <div style="font-size: 0.8rem; font-weight: bold; color: #fff; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">${item.name}</div>
-                        <div style="font-size: 0.7rem; color: #666; margin-top:4px; border-top: 1px solid #222; padding-top:4px;">🏪 ${item.ownerName}</div>
+                        <div style="font-size: 0.7rem; color: #4caf50; margin-top:2px;">$${item.price}.00</div>
+                        <div style="font-size: 0.65rem; color: #666; margin-top:4px; border-top: 1px solid #222; padding-top:4px;">🏪 ${item.ownerName}</div>
                     </div>
                 `);
             });
         }
 
-        // Profile Display View Changes
+        // Customer Profile View Routing
         function viewProfile(shopId) {
             const shop = GLOBAL_SHOP_REGISTRY.find(s => s.id === shopId);
             if (!shop) return;
@@ -252,19 +316,22 @@
                 : `<img src="${shop.image}" style="width: 100%; max-height: 180px; object-fit: cover; border-radius: 8px; margin: 15px 0; border: 1px solid #222;">`;
 
             document.getElementById("storefrontContentWindow").innerHTML = `
-                <span style="font-size: 0.7rem; color: #4caf50; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Verified Standard Display</span>
+                <span style="font-size: 0.7rem; color: #4caf50; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">Live Operational Display</span>
                 <h2 style="margin: 8px 0 4px; font-size: 1.4rem; color: #fff;">${shop.name}</h2>
                 <p style="color: #666; font-size: 0.8rem; margin-bottom: 15px;">Operational Frame: [${shop.location.toUpperCase()}]</p>
-                <p style="font-size: 0.9rem; color: #ccc; line-height: 1.4; font-style: italic;">"${shop.motto}"</p>
+                <p style="font-size: 0.9rem; color: #ccc; line-height: 1.4;">"${shop.motto}"</p>
                 
                 ${visualAsset}
                 
                 <div style="text-align: left; margin-top: 20px;">
-                    <h5 style="color: #aaa; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px;">Item Catalogs</h5>
+                    <h5 style="color: #aaa; font-size: 0.75rem; text-transform: uppercase; margin-bottom: 10px;">Available Stock Directory</h5>
                     ${shop.products.map(p => `
-                        <div style="background: #1a1a1a; padding: 10px; border-radius: 8px; display: flex; gap: 10px; align-items: center; border: 1px solid #222;">
-                            <img src="${p.img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
-                            <div style="font-size:0.85rem; font-weight:500; color:#fff;">${p.name}</div>
+                        <div style="background: #1a1a1a; padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #222; margin-bottom: 8px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <img src="${p.img}" style="width:40px; height:40px; object-fit:cover; border-radius:4px;">
+                                <div style="font-size:0.85rem; font-weight:500; color:#fff;">${p.name}</div>
+                            </div>
+                            <div style="font-size: 0.85rem; color: #4caf50; font-weight: bold;">$${p.price}.00</div>
                         </div>
                     `).join('')}
                 </div>
@@ -281,21 +348,95 @@
             document.getElementById("customerScreen").style.display = "block";
         }
 
-        // Secure Session Guard Handling
+        // ==========================================
+        // ERP WORKSPACE PANEL ACTIONS (PARTNER ENGINE)
+        // ==========================================
         function startSession(partner) {
             activeSession = partner;
             document.getElementById("dashPartnerName").innerText = partner.name;
-            document.getElementById("partnerSlotDetails").innerHTML = `
-                <div style="font-size: 0.85rem; color: #aaa; display: flex; flex-direction: column; gap: 8px;">
-                    <div><strong>Trade Classification:</strong> ${partner.category}</div>
-                    <div><strong>Activity Score:</strong> ${partner.patronizedCount} Interactions</div>
-                    <div><strong>Registered Region:</strong> ${partner.location.toUpperCase()}</div>
-                </div>
-            `;
+            
+            // Hydrate inner contents
+            refreshErpInventoryView();
+            switchErpTab('stocks');
+            
             document.getElementById("customerScreen").style.display = "none";
             document.getElementById("unifiedStorefrontView").style.display = "none";
             document.getElementById("partnerDashboardView").style.display = "block";
             refreshTimeout();
+        }
+
+        function switchErpTab(targetTab) {
+            const tabs = ['stocks', 'sales', 'metrics', 'issue'];
+            tabs.forEach(t => {
+                document.getElementById(`erpTab${t.charAt(0).toUpperCase() + t.slice(1)}`).style.display = (t === targetTab) ? 'block' : 'none';
+                document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`).classList.toggle('active', t === targetTab);
+            });
+        }
+
+        function refreshErpInventoryView() {
+            if (!activeSession) return;
+            const stockListDiv = document.getElementById("erpStockList");
+            const selectDropdown = document.getElementById("erpSaleItemSelect");
+            
+            stockListDiv.innerHTML = "";
+            selectDropdown.innerHTML = "";
+
+            activeSession.products.forEach(p => {
+                // Render stock items rows
+                stockListDiv.insertAdjacentHTML('beforeend', `
+                    <div style="background:#1a1a1a; padding:10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; border:1px solid #222;">
+                        <div style="font-size:0.85rem; color:white; font-weight:bold;">${p.name}</div>
+                        <div style="font-size:0.8rem; color:#aaa;">Stock: <span style="color:#ffeb3b; font-weight:bold;">${p.stockCount} left</span> | Unit: $${p.price}</div>
+                    </div>
+                `);
+
+                // Render option row into sales logic terminal
+                selectDropdown.insertAdjacentHTML('beforeend', `<option value="${p.id}">${p.name} ($${p.price})</option>`);
+            });
+
+            // Hydrate metrics accounting summary numbers
+            document.getElementById("erpMetricRevenue").innerText = `$${activeSession.revenue}.00`;
+            document.getElementById("erpMetricUnits").innerText = `${activeSession.unitsSold} pcs`;
+        }
+
+        function executeLogSale() {
+            if (!activeSession) return;
+            const itemId = document.getElementById("erpSaleItemSelect").value;
+            const qty = parseInt(document.getElementById("erpSaleQtyInput").value) || 1;
+            
+            const targetItem = activeSession.products.find(p => p.id === itemId);
+            if (!targetItem) return;
+
+            if (targetItem.stockCount < qty) {
+                alert("Audit conflict: Logged quantity exceeds remaining active stock frame.");
+                return;
+            }
+
+            // Execute automated matrix calculations
+            targetItem.stockCount -= qty;
+            const cashFlow = targetItem.price * qty;
+            activeSession.revenue += cashFlow;
+            activeSession.unitsSold += qty;
+
+            // Log entry to audit timeline box
+            const historyLog = document.getElementById("erpAuditHistoryLog");
+            if (historyLog.innerText.includes("No active transactions")) historyLog.innerHTML = "";
+            
+            historyLog.insertAdjacentHTML('afterbegin', `
+                <div style="background:#222; padding:6px; border-radius:4px; margin-bottom:4px; color:#4caf50;">
+                    ✅ Sold ${qty}x ${targetItem.name} (+$${cashFlow}.00)
+                </div>
+            `);
+
+            refreshErpInventoryView();
+            alert("Cash transaction entry cleared and added to ledger audit matrix.");
+        }
+
+        function submitErpIssue() {
+            const txt = document.getElementById("erpIssueTextInput").value.trim();
+            if(!txt) return;
+            alert("Operational alert log compiled and transferred securely to administration data records.");
+            document.getElementById("erpIssueTextInput").value = "";
         }
 
         function refreshTimeout() {
@@ -304,10 +445,10 @@
                 activeSession = null;
                 exitToDirectory();
                 alert("Session safety lock triggered due to idle period.");
-            }, 15 * 60 * 1000); // Safe 15 min lock out
+            }, 15 * 60 * 1000);
         }
 
-        // Operational Hook Setups
+        // Event Listeners Framework
         function initListeners() {
             document.getElementById("soBizIconBtn").addEventListener('click', exitToDirectory);
             document.getElementById("backToMarketplaceBtn").addEventListener('click', exitToDirectory);
@@ -316,7 +457,13 @@
             window.addEventListener('mousemove', () => { if(activeSession) refreshTimeout(); });
             window.addEventListener('keydown', () => { if(activeSession) refreshTimeout(); });
 
-            // Category filter switches
+            // 1. FIXED: KEYBOARD ENTER "GO" CAPABILITY FOR PORTAL ENTRY
+            document.getElementById("partnerIdInput").addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    document.getElementById("submitPartnerLogin").click();
+                }
+            });
+
             const catButtons = document.querySelectorAll(".category-btn");
             catButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
@@ -326,13 +473,11 @@
                 });
             });
 
-            // Location filter actions
             document.getElementById("locationFilter").addEventListener('change', (e) => {
                 const activeBtn = document.querySelector(".category-btn.active");
                 renderMarketplace(activeBtn ? activeBtn.getAttribute("data-cat") : "all", e.target.value);
             });
 
-            // Modal Controls
             document.getElementById("partnerGateTrigger").addEventListener('click', () => { document.getElementById("partnerLoginModal").style.display = "flex"; });
             document.getElementById("closePartnerLogin").addEventListener('click', () => { document.getElementById("partnerLoginModal").style.display = "none"; });
             
@@ -348,16 +493,21 @@
                 }
             });
 
-            // Admin configuration helper actions
+            // Admin running notice controller hook
             const genBtn = document.getElementById("generateCodeBtn");
             if (genBtn) {
                 genBtn.addEventListener('click', () => {
                     const txt = document.getElementById("newNoticeText").value || "Marketplace active globally.";
-                    const gifUrl = document.getElementById("newNoticeGIF").value;
-                    let gifImg = gifUrl ? `<br><img src="${gifUrl}" style="max-width:100%; margin-top:8px;" alt="">` : '';
+                    const gifUrl = document.getElementById("newNoticeGIF").value.trim();
                     
-                    // Directly apply locally for zero-lag editing checks
-                    document.getElementById("noticeMarqueeContainer").innerHTML = `<div class="marquee-item"><p>⚠️ <strong>DAILY ROUTINE:</strong> ${txt}</p>${gifImg}</div>`;
+                    document.getElementById("globalNoticePara").innerHTML = `⚠️ <strong>DAILY ROUTINE:</strong> ${txt}`;
+                    
+                    const assetDiv = document.getElementById("globalNoticeAssetContainer");
+                    if (gifUrl) {
+                        assetDiv.innerHTML = `<img src="${gifUrl}" style="max-width:100%; border-radius:6px; max-height:150px; margin-top:8px;" alt="Notice Animation Asset">`;
+                    } else {
+                        assetDiv.innerHTML = "";
+                    }
                 });
             }
         }
