@@ -7,11 +7,11 @@
     <link rel="manifest" href="manifest.json">
     <style>
         :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #0f172a;
-            --border: #e2e8f0;
+            --primary: #4caf50;
+            --bg: #0b0b0b;
+            --card-bg: #121212;
+            --text: #ffffff;
+            --border: #222222;
             --alert: #dc2626;
             --success: #16a34a;
             --badge-text: #1e293b; 
@@ -23,17 +23,9 @@
             background-color: var(--bg);
             color: var(--text);
         }
-        header {
-            background: var(--card-bg);
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
         .container {
-            max-width: 650px;
-            margin: 20px auto;
+            max-width: 800px;
+            margin: 0 auto;
             padding: 0 15px;
             padding-bottom: 90px; 
         }
@@ -50,22 +42,24 @@
         select, input, textarea, button {
             width: 100%;
             padding: 10px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #444;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 0.95rem;
             font-family: inherit;
+            background: #222;
+            color: #fff;
         }
         textarea { resize: vertical; height: 60px; }
         button {
             background-color: var(--primary);
-            color: white;
+            color: black;
             font-weight: 600;
             border: none;
             cursor: pointer;
             margin-top: 5px;
         }
-        button:active { background-color: #1d4ed8; }
+        button:active { background-color: #439a46; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
         .date-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .hidden { display: none !important; }
@@ -81,26 +75,27 @@
         }
 
         .complaint-card {
-            background: #fff1f2 !important;
-            border: 1px solid #ffe4e6 !important;
+            background: #2a1215 !important;
+            border: 1px solid #42181d !important;
             padding: 12px;
             border-radius: 6px;
             margin-bottom: 8px;
             font-size: 0.85rem;
-            color: #1e293b !important; 
+            color: #ff9494 !important; 
         }
 
-        .low-stock { color: var(--alert); font-weight: bold; }
+        .low-stock { color: #f44336; font-weight: bold; }
          
         .badge { 
-            background: #e2e8f0 !important; 
-            color: var(--badge-text) !important; 
+            background: #222 !important; 
+            color: #4caf50 !important; 
             padding: 2px 8px; 
             border-radius: 4px; 
             font-size: 0.8rem; 
             font-weight: 700;
             display: inline-block;
             margin-top: 4px;
+            border: 1px solid #333;
         }
 
         .notification-hub-grid {
@@ -108,6 +103,9 @@
             grid-template-columns: 1fr;
             gap: 10px;
             margin-bottom: 15px;
+            max-width: 800px;
+            margin: 15px auto;
+            padding: 0 15px;
         }
         @media (min-width: 480px) {
             .notification-hub-grid { grid-template-columns: 1fr 1fr; }
@@ -129,13 +127,13 @@
             gap: 4px;
         }
         .hub-system {
-            background: #fef2f2; border: 1px solid #fee2e2; border-left: 4px solid #ef4444; color: #991b1b;
+            background: #2a1212; border: 1px solid #421818; border-left: 4px solid #ef4444; color: #f9a8a8;
         }
         .hub-admin {
-            background: #fffbeb; border: 1px solid #fef3c7; border-left: 4px solid #d97706; color: #92400e;
+            background: #2a2312; border: 1px solid #423518; border-left: 4px solid #d97706; color: #f5d0a1;
         }
         .system-alert-item {
-            font-size: 0.82rem; background: rgba(239, 68, 68, 0.08); padding: 3px 6px; border-radius: 4px; margin-top: 4px; font-weight: 500;
+            font-size: 0.82rem; background: rgba(239, 68, 68, 0.2); padding: 3px 6px; border-radius: 4px; margin-top: 4px; font-weight: 500;
         }
 
         .search-filter-bar {
@@ -143,73 +141,35 @@
             grid-template-columns: 3fr 2fr;
             gap: 8px;
             margin-bottom: 12px;
-            background: #f1f5f9;
+            background: #121212;
             padding: 8px;
             border-radius: 6px;
+            border: 1px solid #222;
         }
         .search-filter-bar input, .search-filter-bar select {
-            padding: 6px 10px; font-size: 0.85rem; height: 34px; color: #0f172a; background: #ffffff;
-        }
-
-        /* PUBLIC STOREFRONT STYLING */
-        .public-hero {
-            text-align: center;
-            padding: 30px 15px;
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #bfdbfe;
-        }
-        .public-catalog-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        @media(min-width: 480px) {
-            .public-catalog-grid { grid-template-columns: 1fr 1fr; }
-        }
-        .catalog-item-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-        }
-        .shop-tag {
-            font-size: 0.75rem;
-            font-weight: bold;
-            background-color: #f1f5f9;
-            color: #475569;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-top: 4px;
+            padding: 6px 10px; font-size: 0.85rem; height: 34px; color: #fff; background: #222;
         }
 
         /* FLOATING ACTION UTILITIES */
         .floating-gear-trigger {
-            position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background-color: #475569; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; z-index: 9999; user-select: none;
+            position: fixed; bottom: 20px; left: 20px; width: 50px; height: 50px; background-color: #333; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer; z-index: 9999; user-select: none; border: 1px solid #444;
         }
         .floating-media-trigger {
-            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: #ea580c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15); cursor: pointer; z-index: 9998; user-select: none;
+            position: fixed; bottom: 20px; right: 20px; width: 50px; height: 50px; background-color: #ea580c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; box-shadow: 0 4px 12px rgba(0,0,0,0.5); cursor: pointer; z-index: 9998; user-select: none;
         }
         .floating-media-window {
-            position: fixed; bottom: 85px; right: 20px; width: 310px; max-height: 400px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.18); z-index: 10000; overflow-y: auto; display: flex; flex-direction: column;
+            position: fixed; bottom: 85px; right: 20px; width: 310px; max-height: 400px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.6); z-index: 10000; overflow-y: auto; display: flex; flex-direction: column;
         }
-        .media-window-header { background: #f1f5f9; padding: 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .media-window-header { background: #222; padding: 12px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .media-window-body { padding: 15px; text-align: center; }
-        .media-window-body img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); background: #f8fafc; }
+        .media-window-body img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.5); background: #1e1e1e; }
 
         /* GATEWAY OVERLAY MODAL */
         .gateway-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); display: flex; align-items: center; justify-content: center; z-index: 20000; padding: 15px; box-sizing: border-box;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 20000; padding: 15px; box-sizing: border-box;
         }
         .gateway-content {
-            background: white; border-radius: 12px; max-width: 400px; width: 100%; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            background: #1e1e1e; border-radius: 12px; max-width: 400px; width: 100%; padding: 25px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); border: 1px solid #333;
         }
 
         /* EMBEDDED WIDE NOTICE STYLES */
@@ -263,47 +223,25 @@
 </head>
 <body>
 
-    <header>
-        <div>
-            <h2 onclick="showPublicStorefrontLanding()" style="margin:0; font-size:1.3rem; cursor:pointer; color:var(--primary); font-weight: 800; letter-spacing: -0.5px;">SO Biz Digital Store</h2>
-        </div>
-        <div style="width: auto; max-width: 150px;" id="themeSelectorGroup" class="hidden">
-            <select id="uiTheme" onchange="changeWorkspaceTheme()" style="padding: 5px; font-size: 0.85rem;">
-                <option value="default">Corporate Blue</option>
-                <option value="artisan">Artisan Earth</option>
-                <option value="trader">Trader Orange</option>
-                <option value="dark">Classic Dark Mode</option>
+    <div id="so-biz-marketplace" style="width:100%; font-family: sans-serif; background-color: #0b0b0b; color: #ffffff; min-height: 100vh; padding-bottom: 60px;">
+
+        <header style="display: flex; align-items: center; justify-content: space-between; padding: 15px 20px; background: #121212; border-bottom: 2px solid #222; position: sticky; top: 0; z-index: 100;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div id="soBizIconBtn" style="cursor: pointer; background: #4caf50; padding: 8px 12px; border-radius: 6px; font-weight: bold; color: black; display: flex; align-items: center; gap: 5px;">
+                    ⚙️ <span>SO Biz</span>
+                </div>
+                <div>
+                    <h2 style="margin: 0; font-size: 1.1rem; color: #fff;">Welcome to our Marketplace</h2>
+                    <span style="font-size: 0.75rem; color: #888;">Thank you for visiting</span>
+                </div>
+            </div>
+            
+            <select id="locationFilter" style="background: #222; color: #fff; border: 1px solid #444; padding: 6px; border-radius: 4px; font-size: 0.85rem;">
+                <option value="all">🌍 Global (All Locations)</option>
+                <option value="local">📍 Local Region</option>
+                <option value="international">✈️ International Slots</option>
             </select>
-        </div>
-    </header>
-
-    <div class="container">
-        
-        <div id="publicStorefrontLandingView">
-            <div class="public-hero">
-                <h2 style="color: #1e3a8a; margin-bottom: 6px;">Welcome to Our Marketplace</h2>
-                <p style="color: #4b5563; font-size: 0.95rem; margin: 0;">Browse live product collections, monitor operational prices, and submit direct orders instantly.</p>
-            </div>
-
-            <div class="card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <h3 style="margin:0; font-size:1.1rem;">Products Catalog Matrix</h3>
-                    <span id="publicTotalCountBadge" class="badge" style="background:#dbeafe !important; color:#1e40af !important;">0 Items</span>
-                </div>
-                
-                <div class="search-filter-bar">
-                    <input type="text" id="publicSearchInput" placeholder="🔍 Search product name..." oninput="renderPublicCatalog()">
-                    <select id="publicShopFilter" onchange="renderPublicCatalog()">
-                        <option value="ALL">All Shops</option>
-                        <option value="Artisan">Artisan Stream</option>
-                        <option value="Petty Trader">Petty Trader</option>
-                        <option value="Supermarket">Supermarket</option>
-                    </select>
-                </div>
-
-                <div id="publicCatalogDisplayZone" class="public-catalog-grid"></div>
-            </div>
-        </div>
+        </header>
 
         <div id="globalNotificationHub" class="notification-hub-grid hidden">
             <div id="hubSystemPanel" class="hub-banner hub-system">
@@ -315,32 +253,65 @@
                 <div class="admin-notice-box-wide">
                     <div class="marquee-vertical-container" id="noticeMarqueeContainer">
                         <div class="marquee-item">
-    <p>⚠️ <strong>DAILY ROUTINE:</strong> Hey</p>
-    <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDB5Y21wczVyeTRkeW05NTlvMXM4d29qY2l1ZDBtZzJhbHkxYzA5OSZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/fUQ4rhUZJYiQsas6WD/200.webp" alt="Notice Update Asset">
-</div>
+                            <p>⚠️ <strong>DAILY ROUTINE:</strong> System sync complete. Partners active.</p>
+                        </div>
                     </div>
                 </div>
                 <div id="hubAdminText" class="hidden"></div>
             </div>
         </div>
 
-        <div id="workspace" class="hidden">
+        <main id="customerScreen" style="padding: 15px; max-width: 800px; margin: 0 auto;">
             
+            <section style="margin-bottom: 25px;">
+                <h3 style="color: #4caf50; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 10px;">🔥 Top Patronized Shops</h3>
+                <div id="topShopsRow" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scrollbar-width: thin;">
+                    </div>
+            </section>
+
+            <nav style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 25px;">
+                <button class="category-btn" data-cat="all" style="background:#4caf50; color:black; font-weight:bold; padding:12px; border:none; border-radius:6px; cursor:pointer;">All Trades</button>
+                <button class="category-btn" data-cat="Fashion" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Fashion & Apparel</button>
+                <button class="category-btn" data-cat="Technical" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Engineering & Tech</button>
+                <button class="category-btn" data-cat="Supermarket" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Supermarkets</button>
+                <button class="category-btn" data-cat="Petty" style="background:#222; color:white; padding:12px; border:1px solid #333; border-radius:6px; cursor:pointer;">Petty Shops & Retail</button>
+            </nav>
+
+            <section id="shopDirectorySection" style="margin-bottom: 25px;">
+                <h3 style="color: #888; font-size: 0.95rem; margin-bottom: 10px;">Browse Collections</h3>
+                <div id="shopDirectoryGrid" style="display: flex; flex-direction: column; gap: 15px;">
+                    </div>
+            </section>
+
+            <section style="margin-top: 30px; border-top: 1px solid #222; padding-top: 20px;">
+                <h3 style="color: #ffeb3b; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 10px;">🎲 Random Explorer Discovery</h3>
+                <div id="randomExplorerGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    </div>
+            </section>
+        </main>
+
+        <div id="unifiedStorefrontView" style="display: none; padding: 15px; max-width: 800px; margin: 0 auto;">
+            <button id="backToMarketplaceBtn" style="background: none; border: 1px solid #444; color: #aaa; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-bottom: 15px;">⬅️ Back to Directory</button>
+            
+            <div id="storefrontContentWindow" style="background: #121212; border: 2px solid #333; border-radius: 8px; padding: 20px; text-align: center;">
+                </div>
+        </div>
+
+        <div id="workspace" class="container hidden">
             <div class="card" style="padding: 10px; display: flex; gap: 6px; background: var(--card-bg); border-bottom: 2px solid var(--primary); margin-bottom: 15px; overflow-x: auto;">
-                <button onclick="switchPartnerView('stock')" style="margin:0; background-color: var(--primary); position: relative; white-space: nowrap;">
+                <button onclick="switchPartnerView('stock')" style="margin:0; background-color: var(--primary); color: black; position: relative; white-space: nowrap;">
                     📦 View Stock
                     <span id="lowStockBadge" style="display:none; position: absolute; top: -5px; right: -5px; background: var(--alert); color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.7rem; font-weight: bold;">0</span>
                 </button>
-                <button onclick="switchPartnerView('sales')" style="margin:0; background-color: #0284c7; white-space: nowrap;">📝 Log Sale</button>
-                <button onclick="switchPartnerView('audit')" style="margin:0; background-color: #475569; white-space: nowrap;">📊 Metrics</button>
-                <button onclick="switchPartnerView('support')" style="margin:0; background-color: #be123c; white-space: nowrap;">🤫 Report Issue</button>
-                <button onclick="showPublicStorefrontLanding()" style="margin:0; background-color: #64748b; white-space: nowrap;">Exit Store 🚪</button>
+                <button onclick="switchPartnerView('sales')" style="margin:0; background-color: #0284c7; color: white; white-space: nowrap;">📝 Log Sale</button>
+                <button onclick="switchPartnerView('audit')" style="margin:0; background-color: #475569; color: white; white-space: nowrap;">📊 Metrics</button>
+                <button onclick="switchPartnerView('support')" style="margin:0; background-color: #be123c; color: white; white-space: nowrap;">🤫 Report Issue</button>
             </div>
 
             <div id="moduleStockView" class="card module-view">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                     <h3>My Active Stock Ledger</h3>
-                    <button onclick="toggleStockForm()" id="btnToggleForm" style="width: auto; margin: 0; padding: 6px 12px; font-size: 0.85rem; background-color: #64748b;">+ Add New Item</button>
+                    <button onclick="toggleStockForm()" id="btnToggleForm" style="width: auto; margin: 0; padding: 6px 12px; font-size: 0.85rem; background-color: #64748b; color: white;">+ Add New Item</button>
                 </div>
 
                 <div class="search-filter-bar">
@@ -354,7 +325,7 @@
                     </select>
                 </div>
 
-                <div id="stockEntryForm" class="hidden" style="background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px dashed #cbd5e1; margin-bottom: 15px;">
+                <div id="stockEntryForm" class="hidden" style="background: #1a1a1a; padding: 12px; border-radius: 6px; border: 1px dashed #444; margin-bottom: 15px;">
                     <input type="hidden" id="editItemIndex" value="">
                     <div class="form-group">
                         <label>Product Name</label>
@@ -384,7 +355,7 @@
                             <textarea id="prodMemo" placeholder="Supplier notes..."></textarea>
                         </div>
                     </div>
-                    <button id="btnSaveStock" onclick="addStockItem()" style="background-color: var(--success);">Save to My Inventory</button>
+                    <button id="btnSaveStock" onclick="addStockItem()" style="background-color: var(--success); color: white;">Save to My Inventory</button>
                 </div>
                 
                 <div id="stockList" style="border-top:1px solid var(--border);"></div>
@@ -392,9 +363,9 @@
 
             <div id="moduleSalesView" class="card module-view hidden">
                 <h3>Log Current Transaction</h3>
-                <div class="form-group" style="background: #f1f5f9; padding: 8px; border-radius: 6px; margin-bottom: 12px;">
-                    <label for="salesSearchInput" style="color: #334155; font-size: 0.85rem;">🔍 Quick Find Item</label>
-                    <input type="text" id="salesSearchInput" placeholder="Type product name to filter dropdown..." oninput="populateSalesDropdown()" style="padding: 6px 10px; height: 34px; background: #ffffff; color: #0f172a;">
+                <div class="form-group" style="background: #1a1a1a; padding: 8px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #333;">
+                    <label for="salesSearchInput" style="color: #aaa; font-size: 0.85rem;">🔍 Quick Find Item</label>
+                    <input type="text" id="salesSearchInput" placeholder="Type product name to filter dropdown..." oninput="populateSalesDropdown()" style="padding: 6px 10px; height: 34px; background: #222; color: #fff;">
                 </div>
                 <div class="form-group">
                     <label>Select Item to Sell</label>
@@ -410,7 +381,7 @@
                         <input type="date" id="salesDate">
                     </div>
                 </div>
-                <button onclick="registerPartnerSale()" style="background-color: #0284c7;">Process & Register Sale</button>
+                <button onclick="registerPartnerSale()" style="background-color: #0284c7; color: white;">Process & Register Sale</button>
             </div>
 
             <div id="moduleAuditView" class="card module-view hidden">
@@ -426,7 +397,7 @@
                             <input type="date" id="endDate">
                         </div>
                     </div>
-                    <button onclick="runLocalAudit()">Process Range Audit</button>
+                    <button onclick="runLocalAudit()" style="background-color: #475569; color: white;">Process Range Audit</button>
                     <div id="auditOutput" style="margin-top:12px; font-size:0.95rem;"></div>
                 </div>
 
@@ -447,29 +418,29 @@
                         </div>
                     </div>
                     <div class="date-grid">
-                        <button onclick="addLedgerEntry('IOwe')" style="background-color: #64748b;">I Owe</button>
-                        <button onclick="addLedgerEntry('TheyOwe')" style="background-color: #ea580c;">They Owe</button>
+                        <button onclick="addLedgerEntry('IOwe')" style="background-color: #555; color: white;">I Owe</button>
+                        <button onclick="addLedgerEntry('TheyOwe')" style="background-color: #ea580c; color: white;">They Owe</button>
                     </div>
                     <div style="margin-top:20px; display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
                         <div>
                             <strong>I OWE</strong>
-                            <div id="iOweList" style="font-size:0.85rem; margin-top:5px;"></div>
+                            <div id="iOweList" style="font-size:0.85rem; margin-top:5px; color: #ff9494;"></div>
                         </div>
                         <div>
                             <strong>THEY OWE</strong>
-                            <div id="theyOweList" style="font-size:0.85rem; margin-top:5px;"></div>
+                            <div id="theyOweList" style="font-size:0.85rem; margin-top:5px; color: #a3e635;"></div>
                         </div>
                     </div>
                 </div>
 
                 <div style="border-top: 1px solid var(--border); padding-top: 15px; text-align: center;">
-                    <button onclick="exportPartnerBackup()" style="background-color: #0f172a; font-size:0.85rem; width: auto; padding: 8px 15px;">📥 Backup Data</button>
+                    <button onclick="exportPartnerBackup()" style="background-color: #222; border: 1px solid #444; color: white; font-size:0.85rem; width: auto; padding: 8px 15px;">📥 Backup Data</button>
                 </div>
             </div>
 
             <div id="moduleSupportView" class="card module-view hidden">
                 <h3>🤫 Private Support Desk</h3>
-                <p style="font-size:0.85rem; color:#64748b; margin-top:-8px;">Log discrepancy issues or data disputes directly with management here.</p>
+                <p style="font-size:0.85rem; color:#888; margin-top:-8px;">Log discrepancy issues or data disputes directly with management here.</p>
                 <div class="form-group">
                     <label>Select Category</label>
                     <select id="complaintCategory">
@@ -483,13 +454,13 @@
                     <label>Detailed Message Explanation</label>
                     <textarea id="complaintText" placeholder="Describe the exact discrepancy item, numbers, or corrections needed..."></textarea>
                 </div>
-                <button onclick="submitPartnerComplaint()" style="background-color: #be123c;">File Discrepancy Record</button>
+                <button onclick="submitPartnerComplaint()" style="background-color: #be123c; color: white;">File Discrepancy Record</button>
             </div>
 
-            <div id="adminPanelCard" class="card hidden" style="border-top: 3px solid #475569; margin-top: 20px;">
+            <div id="adminPanelCard" class="card hidden" style="border-top: 3px solid #4caf50; margin-top: 20px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <h3 style="margin:0;">Administrative Control Dashboard</h3>
-                    <button onclick="document.getElementById('adminPanelCard').classList.add('hidden')" style="width:auto; margin:0; padding:4px 10px; background:#475569; font-size:0.8rem;">Close Admin</button>
+                    <h3 style="margin:0; color: #4caf50;">Administrative Control Dashboard</h3>
+                    <button onclick="document.getElementById('adminPanelCard').classList.add('hidden')" style="width:auto; margin:0; padding:4px 10px; background:#444; font-size:0.8rem; color: white;">Close Admin</button>
                 </div>
 
                 <div class="form-group">
@@ -497,66 +468,91 @@
                     <div id="adminComplaintInboxList" style="max-height: 240px; overflow-y: auto; padding: 2px;"></div>
                 </div>
                 
-                <div class="form-group" style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 12px;">
+                <div class="form-group" style="background: #1a1a1a; padding: 10px; border-radius: 6px; border: 1px solid #333; margin-bottom: 12px;">
                     <label style="color:#d97706; font-weight: bold;">Broadcast Header Announcement</label>
                     <input type="text" id="adminBulletinInput" placeholder="Type text alert info here...">
-                    <button onclick="publishAdminAnnouncement()" style="background-color: #d97706; font-size:0.85rem; padding:6px; margin-top:5px;">Push Notice Live</button>
+                    <button onclick="publishAdminAnnouncement()" style="background-color: #d97706; color: white; font-size:0.85rem; padding:6px; margin-top:5px;">Push Notice Live</button>
                 </div>
 
-                <div class="form-group" style="background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid var(--border); margin-bottom: 15px;">
+                <div class="form-group" style="background: #1a1a1a; padding: 10px; border-radius: 6px; border: 1px solid #333; margin-bottom: 15px;">
                     <label style="color:#2563eb; font-weight: bold;">Update Floating Showcase Board</label>
                     <input type="text" id="adminMediaTitle" placeholder="Headline" style="margin-bottom: 5px;">
                     <input type="text" id="adminMediaDesc" placeholder="Description text" style="margin-bottom: 5px;">
-                    <div style="border: 1px solid #cbd5e1; border-radius: 6px; padding: 8px; background: white; margin-bottom: 5px;">
-                        <input type="file" id="adminLocalFileSelector" accept="image/*" onchange="handleLocalFileLoad(this)" style="border:none; padding: 4px 0;">
+                    <div style="border: 1px solid #444; border-radius: 6px; padding: 8px; background: #222; margin-bottom: 5px;">
+                        <input type="file" id="adminLocalFileSelector" accept="image/*" onchange="handleLocalFileLoad(this)" style="border:none; padding: 4px 0; background: transparent;">
                     </div>
                     <input type="text" id="adminMediaUrl" placeholder="Or paste web image address link">
-                    <button onclick="publishAdminMediaBoard()" style="background-color: #2563eb; font-size:0.9rem; padding:10px; margin-top:10px;">Deploy Media Live</button>
+                    <button onclick="publishAdminMediaBoard()" style="background-color: #2563eb; color: white; font-size:0.9rem; padding:10px; margin-top:10px;">Deploy Media Live</button>
                 </div>
 
                 <div class="grid-3" style="margin-bottom: 15px;">
-                    <div style="background: #f1f5f9; padding: 10px; border-radius: 6px; text-align: center;">
-                        <small style="color: #64748b; display: block;">Local DB Size</small>
-                        <div id="adminDbCount" style="font-weight: bold; font-size: 1.1rem; color: #334155;">0 Entries</div>
+                    <div style="background: #222; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #333;">
+                        <small style="color: #888; display: block;">Local DB Size</small>
+                        <div id="adminDbCount" style="font-weight: bold; font-size: 1.1rem; color: #fff;">0 Entries</div>
                     </div>
-                    <div style="background: #f1f5f9; padding: 10px; border-radius: 6px; text-align: center;">
-                        <small style="color: #64748b; display: block;">Active Rules</small>
-                        <div style="font-weight: bold; font-size: 1.1rem; color: #334155;">Central</div>
+                    <div style="background: #222; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #333;">
+                        <small style="color: #888; display: block;">Active Rules</small>
+                        <div style="font-weight: bold; font-size: 1.1rem; color: #fff;">Central</div>
                     </div>
-                    <div style="background: #f1f5f9; padding: 10px; border-radius: 6px; text-align: center;">
-                        <small style="color: #64748b; display: block;">Sync Status</small>
+                    <div style="background: #222; padding: 10px; border-radius: 6px; text-align: center; border: 1px solid #333;">
+                        <small style="color: #888; display: block;">Sync Status</small>
                         <div id="adminSyncStatus" style="font-weight: bold; font-size: 0.95rem; color: #16a34a;">Standby</div>
                     </div>
                 </div>
 
                 <div class="date-grid" style="grid-template-columns: 2fr 1fr; gap: 8px;">
-                    <button onclick="triggerRemoteDataSync()" style="background-color: #334155; margin-top: 0;">Simulate Sync</button>
-                    <button onclick="purgeSystemData()" style="background-color: var(--alert); margin-top: 0;">Purge Cache</button>
+                    <button onclick="triggerRemoteDataSync()" style="background-color: #444; color: white; margin-top: 0;">Simulate Sync</button>
+                    <button onclick="purgeSystemData()" style="background-color: var(--alert); color: white; margin-top: 0;">Purge Cache</button>
                 </div>
             </div>
+        </div>
 
+        <div id="partnerDashboardView" style="display: none; padding: 15px; max-width: 800px; margin: 0 auto;">
+            <div style="background: #1a237e; border: 1px solid #3f51b5; padding: 15px; border-radius: 6px; margin-bottom: 15px; display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <h3 id="dashPartnerName" style="margin: 0; color: white;">Partner Active Slot</h3>
+                    <span style="font-size:0.8rem; color: #bcdee2;">Session Secured Globally</span>
+                </div>
+                <button id="manualLogoutBtn" style="background: #f44336; border:none; color:white; padding:6px 12px; border-radius:4px; cursor:pointer;">Exit Workspace</button>
+            </div>
+            <div style="background:#121212; padding:20px; border-radius:8px; border:1px solid #333;">
+                <p>📋 <strong>Status Report:</strong> Your centralized storefront information is active and managed globally by the Master Administrator.</p>
+                <div id="partnerSlotDetails"></div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; padding: 20px 0; border-top: 1px solid #1a1a1a; margin-top: 40px;">
+            <span id="partnerGateTrigger" style="font-size: 0.75rem; color: #333; cursor: pointer;">Partner Portal</span>
+        </footer>
+        
+        <div id="partnerLoginModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000;">
+            <div style="background: #1e1e1e; padding: 25px; border-radius: 8px; width: 90%; max-width: 360px; border: 1px solid #4caf50;">
+                <h3 style="color: #4caf50; margin-top: 0;">Partner Verification</h3>
+                <label style="display:block; margin: 10px 0 5px; font-size:0.85rem;">Business Identifier:</label>
+                <input type="text" id="partnerIdInput" style="width:100%; padding:8px; background:#333; border:1px solid #555; color:white; border-radius:4px;" placeholder="Enter assigned partner ID">
+                <button id="submitPartnerLogin" style="margin-top: 15px; width: 100%; padding: 10px; background: #4caf50; color: black; border: none; font-weight: bold; border-radius: 4px; cursor: pointer;">Access Workspace</button>
+                <button id="closePartnerLogin" style="margin-top: 5px; width: 100%; padding: 8px; background: transparent; color: #888; border: none; cursor: pointer; font-size:0.85rem;">Cancel</button>
+            </div>
         </div>
 
         <div id="staffEntranceModal" class="gateway-modal hidden">
             <div class="gateway-content">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                    <h3 style="margin:0; font-size:1.15rem; color:#0f172a;">Staff Portal Gateway</h3>
-                    <button onclick="closeStaffModal()" style="width:auto; margin:0; padding:2px 8px; background:#64748b; font-size:0.8rem;">✕</button>
+                    <h3 style="margin:0; font-size:1.15rem; color:#fff;">Staff Portal Gateway</h3>
+                    <button onclick="closeStaffModal()" style="width:auto; margin:0; padding:2px 8px; background:#444; color: white; font-size:0.8rem;">✕</button>
                 </div>
-                
-                <div style="background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #e2e8f0; margin-bottom:15px;">
-                    <label style="font-weight:700; font-size:0.85rem; margin-bottom:6px; display:block; color:#475569;">PARTNER WORKSPACE LOG IN</label>
-                    <select id="modalBizTier" style="margin-bottom:8px; background:white;">
+                <div style="background:#222; padding:12px; border-radius:6px; border:1px solid #333; margin-bottom:15px;">
+                    <label style="font-weight:700; font-size:0.85rem; margin-bottom:6px; display:block; color:#aaa;">LEGACY PROFILE WORKSPACE</label>
+                    <select id="modalBizTier" style="margin-bottom:8px; background:#333; color: white;">
                         <option value="Artisan">Artisan Stream</option>
                         <option value="Petty Trader">Petty Trader</option>
                         <option value="Supermarket">Supermarket</option>
                     </select>
-                    <button onclick="saveModalSetupProfile()" style="background-color:#2563eb; margin:0;">Enter Partner Workspace</button>
+                    <button onclick="saveModalSetupProfile()" style="background-color:#4caf50; color: black; margin:0;">Enter Panel</button>
                 </div>
-
-                <div style="border-top:1px dashed #cbd5e1; padding-top:12px;">
-                    <label style="font-weight:700; font-size:0.85rem; margin-bottom:6px; display:block; color:#dc2626;">ADMINISTRATIVE AREA</label>
-                    <button onclick="triggerModalAdminAuth()" style="background-color:#475569; margin:0;">Unlock Admin Console 🔐</button>
+                <div style="border-top:1px dashed #444; padding-top:12px;">
+                    <label style="font-weight:700; font-size:0.85rem; margin-bottom:6px; display:block; color:#ef4444;">ADMINISTRATIVE AREA</label>
+                    <button onclick="triggerModalAdminAuth()" style="background-color:#444; color: white; margin:0;">Unlock Admin Console 🔐</button>
                 </div>
             </div>
         </div>
@@ -566,11 +562,11 @@
         <div id="mediaFabButton" class="floating-media-trigger hidden" onclick="toggleFloatingMediaWindow()">📢</div>
         <div id="floatingMediaWindow" class="floating-media-window hidden">
             <div class="media-window-header">
-                <strong id="mediaTitle" style="color:#1e293b; font-size:0.95rem;">Network Hub</strong>
-                <button onclick="toggleFloatingMediaWindow()" style="width:auto; margin:0; padding:4px 10px; background:#64748b; font-size:0.8rem; border-radius:4px;">✕</button>
+                <strong id="mediaTitle" style="color:#fff; font-size:0.95rem;">Network Hub</strong>
+                <button onclick="toggleFloatingMediaWindow()" style="width:auto; margin:0; padding:4px 10px; background:#444; color: white; font-size:0.8rem; border-radius:4px;">✕</button>
             </div>
             <div class="media-window-body">
-                <p id="mediaDescription" style="margin: 0; font-size: 0.85rem; color: #64748b; line-height: 1.3;"></p>
+                <p id="mediaDescription" style="margin: 0; font-size: 0.85rem; color: #aaa; line-height: 1.3;"></p>
                 <div id="mediaContainer"></div>
             </div>
         </div>
@@ -580,9 +576,7 @@
     <script src="app.js"></script>
 
     <script>
-        // Automatically detect if you are opening this file on your local computer
         if (window.location.hostname === "localhost" || window.location.protocol === "file:") {
-            // Inject the updated button panel dynamically at the bottom of the page
             document.body.insertAdjacentHTML('beforeend', `
                 <div id="localUpdatePanel" style="display: block; background: #1e1e1e; border: 2px dashed #4caf50; padding: 20px; margin: 40px auto; max-width: 600px; border-radius: 8px; font-family: sans-serif; color: white;">
                     <h3 style="color: #4caf50; margin-top:0;">Local Update Dashboard</h3>
@@ -594,7 +588,7 @@
                     <label style="display:block; margin: 10px 0 5px;">GIF or Image File Name (with extension like .gif):</label>
                     <input type="text" id="newNoticeGIF" style="width:100%; padding:8px; background:#333; color:white; border:1px solid #555; border-radius:4px;" placeholder="e.g., update-animation.gif">
                     
-                    <button id="applyNoticeBtn" style="margin-top:15px; background:#4caf50; color:white; border:none; padding:10px 15px; cursor:pointer; border-radius:4px; font-weight:bold; width:100%;">
+                    <button id="applyNoticeBtn" style="margin-top:15px; background:#4caf50; color:black; border:none; padding:10px 15px; cursor:pointer; border-radius:4px; font-weight:bold; width:100%;">
                         Generate Update Code
                     </button>
                     
@@ -606,21 +600,15 @@
                 </div>
             `);
 
-            // Logic to generate the raw code for you to paste
             document.getElementById('applyNoticeBtn').addEventListener('click', () => {
                 const textValue = document.getElementById('newNoticeText').value || "System sync complete. Partners active.";
                 const gifValue = document.getElementById('newNoticeGIF').value;
                 
                 let gifHTML = gifValue ? `<img src="${gifValue}" alt="Notice Update Asset">` : '';
+                const blockCode = \`<div class="marquee-item">\\n    <p>⚠️ <strong>DAILY ROUTINE:</strong> \${textValue}</p>\\n    \${gifHTML}\\n</div>\`;
                 
-                // Generate the exact HTML structure needed
-                const blockCode = `<div class="marquee-item">\n    <p>⚠️ <strong>DAILY ROUTINE:</strong> ${textValue}</p>\n    ${gifHTML}\n</div>`;
-                
-                // Show the output box and display the code
                 document.getElementById('generatedCodeBox').value = blockCode;
                 document.getElementById('codeOutputArea').style.display = 'block';
-                
-                // Temporarily show it on your screen so you can preview it
                 document.getElementById('noticeMarqueeContainer').innerHTML = blockCode;
             });
         }

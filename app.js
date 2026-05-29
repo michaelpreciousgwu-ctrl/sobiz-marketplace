@@ -11,7 +11,7 @@ let salesLogs = JSON.parse(localStorage.getItem('sobiz_sales')) || [];
 let complaints = JSON.parse(localStorage.getItem('sobiz_complaints')) || [];
 
 const ADMIN_SECRET_PIN = "1234"; 
-const ADMIN_PHONE_NUMBER = "2348000000000"; 
+const ADMIN_PHONE_NUMBER = "2348083785696"; 
 
 const DEFAULT_TEXT_NOTICE = "Flour prices are fluctuating from raw suppliers. Adjust retail fields accordingly.";
 const DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80";
@@ -25,7 +25,225 @@ const themes = {
     dark:    { primary: "#3b82f6", bg: "#0f172a", cardBg: "#1e293b", text: "#f8fafc", badgeText: "#0f172a" } 
 };
 
-// --- STAFF ACCESS CONTROL PORTAL GATEWAY ---
+// ==========================================
+// CENTRALIZED GLOBAL REGISTRY (Master Data Matrix)
+// ==========================================
+const GLOBAL_SHOP_REGISTRY = [
+    {
+        id: "P001",
+        name: "Express Artisan Workshop",
+        category: "Technical",
+        location: "local",
+        patronizedCount: 150,
+        motto: "Precision engineering and rapid custom technical repairs.",
+        image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300",
+        gif: "",
+        products: [
+            { name: "Custom Structural Fitting", price: "Contact for Quote", img: "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=150" }
+        ]
+    },
+    {
+        id: "P002",
+        name: "Vanguard Threads & Tailoring",
+        category: "Fashion",
+        location: "international",
+        patronizedCount: 210,
+        motto: "Premium bespoke couture framing global fashion design trends.",
+        image: "https://images.unsplash.com/photo-1544441893-675973e31985?w=300",
+        gif: "",
+        products: [
+            { name: "Premium Tailored Suite Set", price: "Arranged", img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=150" }
+        ]
+    },
+    {
+        id: "P003",
+        name: "Metro Provision Supermarket",
+        category: "Supermarket",
+        location: "local",
+        patronizedCount: 95,
+        motto: "Consolidated household groceries and daily essential goods.",
+        image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=300",
+        gif: "",
+        products: [
+            { name: "Bulk Family Provision Box", price: "Synced Tier", img: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=150" }
+        ]
+    }
+];
+
+// Active State Variables
+let currentActivePartnerSession = null;
+let sessionTimeoutTimer = null;
+
+// ==========================================
+// CORE APP INITIALIZATION & BOOT
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+    // Apply cached theme gracefully if present
+    const cachedTheme = localStorage.getItem('sobiz_theme_choice');
+    if (cachedTheme) {
+        const themeSelector = document.getElementById('uiTheme');
+        if (themeSelector) themeSelector.value = cachedTheme;
+        changeWorkspaceTheme();
+    }
+    
+    // Check if there's an ongoing active partner session to restore
+    const activePartner = localStorage.getItem('so_biz_tier');
+    if (activePartner) {
+        currentActivePartnerSession = activePartner;
+        showDashboard();
+        resetSessionTimeout();
+    } else {
+        showPublicStorefrontLanding();
+    }
+
+    setupInteractionListeners();
+    checkOfflineStatus();
+});
+
+// 9. OFFLINE MODE CAPABILITY (Graceful Fallback Alerts)
+function checkOfflineStatus() {
+    window.addEventListener('offline', () => {
+        console.log("Network dropped. Operating cleanly on cached layout files.");
+    });
+    window.addEventListener('online', () => {
+        console.log("Connection re-established. Silent synchronization complete.");
+    });
+}
+
+// ==========================================
+// INTERACTION & FILTER LISTENERS
+// ==========================================
+function setupInteractionListeners() {
+    // Category selection triggers
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const selectedCat = e.target.getAttribute('data-cat') || "all";
+            const currentLoc = document.getElementById('locationFilter')?.value || "all";
+            
+            // Toggle visual button states
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active-filter'));
+            e.target.classList.add('active-filter');
+            
+            renderMarketplaceHome(selectedCat, currentLoc);
+        });
+    });
+
+    // Location selection dropdown triggers
+    const locFilter = document.getElementById('locationFilter');
+    if (locFilter) {
+        locFilter.addEventListener('change', (e) => {
+            const activeBtn = document.querySelector('.category-btn.active-filter');
+            const selectedCat = activeBtn ? activeBtn.getAttribute('data-cat') : "all";
+            renderMarketplaceHome(selectedCat, e.target.value);
+        });
+    }
+
+    // Traditional catalog filter listeners
+    const publicSearch = document.getElementById('publicSearchInput');
+    if (publicSearch) {
+        publicSearch.addEventListener('input', () => renderPublicCatalog());
+    }
+
+    const publicShopFilter = document.getElementById('publicShopFilter');
+    if (publicShopFilter) {
+        publicShopFilter.addEventListener('change', () => renderPublicCatalog());
+    }
+
+    // Auto-logout security hook on user click interactions
+    window.addEventListener('click', () => {
+        if (currentActivePartnerSession) resetSessionTimeout();
+    });
+}
+
+// ==========================================
+// RENDER COMPONENT LOGIC (Global Marketplace)
+// ==========================================
+function renderMarketplaceHome(categoryFilter = "all", locationFilter = "all") {
+    const topShopsRow = document.getElementById("topShopsRow");
+    const directoryGrid = document.getElementById("shopDirectoryGrid");
+    const randomGrid = document.getElementById("randomExplorerGrid");
+    
+    if (!topShopsRow || !directoryGrid || !randomGrid) return;
+    
+    topShopsRow.innerHTML = "";
+    directoryGrid.innerHTML = "";
+    randomGrid.innerHTML = "";
+
+    // 1. Render Top Patronized Shops (Sorted by highest traffic)
+    const sortedTopShops = [...GLOBAL_SHOP_REGISTRY].sort((a,b) => b.patronizedCount - a.patronizedCount);
+    sortedTopShops.forEach(shop => {
+        topShopsRow.insertAdjacentHTML('beforeend', `
+            <div onclick="openUnifiedStorefront('${shop.id}')" style="min-width: 140px; background: #1a1a1a; padding: 10px; border-radius: 8px; border: 1px solid #333; text-align: center; cursor: pointer; flex-shrink: 0;">
+                <div style="width: 50px; height: 50px; background-image: url('${shop.image}'); background-size: cover; border-radius: 50%; margin: 0 auto 8px;"></div>
+                <div style="font-size: 0.8rem; font-weight: bold; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${shop.name}</div>
+                <div style="font-size: 0.7rem; color: #4caf50; margin-top: 4px;">⭐ High Traffic</div>
+            </div>
+        `);
+    });
+
+    // 2. Filter & Render Main Directory View
+    let directoryMatchCount = 0;
+    GLOBAL_SHOP_REGISTRY.forEach(shop => {
+        if (categoryFilter !== "all" && shop.category !== categoryFilter) return;
+        if (locationFilter !== "all" && shop.location !== locationFilter) return;
+
+        directoryMatchCount++;
+        directoryGrid.insertAdjacentHTML('beforeend', `
+            <div onclick="openUnifiedStorefront('${shop.id}')" style="background: #121212; border: 1px solid #222; border-radius: 8px; padding: 12px; display: flex; gap: 12px; align-items: center; cursor: pointer; transition: transform 0.2s;">
+                <img src="${shop.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px;" alt="${shop.name}">
+                <div style="flex: 1;">
+                    <div style="font-weight: bold; color: #fff; font-size: 0.95rem;">${shop.name}</div>
+                    <div style="font-size: 0.75rem; color: #888; margin-top: 2px;">${shop.motto}</div>
+                    <div style="font-size: 0.7rem; color: #4caf50; margin-top: 4px;">🏪 Area: ${shop.category} (${shop.location})</div>
+                </div>
+                <span style="color: #4caf50;">➡️</span>
+            </div>
+        `);
+    });
+
+    if (directoryMatchCount === 0) {
+        directoryGrid.innerHTML = `<p style="text-align:center; padding: 20px; color:#64748b; font-size:0.9rem;">No directory locations match these filtering criteria.</p>`;
+    }
+
+    // 3. Render Discovery Explorer Grid Selection (Random Mix)
+    const randomizedDiscovery = [...GLOBAL_SHOP_REGISTRY].sort(() => 0.5 - Math.random()).slice(0, 2);
+    randomizedDiscovery.forEach(shop => {
+        randomGrid.insertAdjacentHTML('beforeend', `
+            <div onclick="openUnifiedStorefront('${shop.id}')" style="background: linear-gradient(135deg, #121212, #1a1a1a); border: 1px solid #222; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer;">
+                <div style="font-size: 1.2rem; margin-bottom: 4px;">🎲</div>
+                <div style="font-weight: bold; font-size: 0.85rem; color: #fff; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">${shop.name}</div>
+                <div style="font-size: 0.7rem; color: #ffeb3b; margin-top: 4px; text-transform: uppercase;">Explore Showcase</div>
+            </div>
+        `);
+    });
+}
+
+// --- OPEN UNIFIED DETAIL STOREFRONT LAYOUT ---
+function openUnifiedStorefront(shopId) {
+    const matchedRegistryShop = GLOBAL_SHOP_REGISTRY.find(s => s.id === shopId);
+    const landingCatalogZone = document.getElementById('publicCatalogDisplayZone');
+    
+    if (!landingCatalogZone) return;
+
+    // Route public catalog display directly to specific store metrics
+    document.getElementById('publicShopFilter').value = shopId;
+    renderPublicCatalog();
+    
+    // Inject registry banner details safely at top if banner layout elements exist
+    const bannerInfoZone = document.getElementById('storefrontHeaderBanner');
+    if (bannerInfoZone && matchedRegistryShop) {
+        bannerInfoZone.innerHTML = `
+            <div style="background: #111; padding: 15px; border-radius: 8px; border: 1px solid #222; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #fff;">${matchedRegistryShop.name}</h3>
+                <p style="margin: 4px 0 0 0; font-size: 0.8rem; color: #aaa;">${matchedRegistryShop.motto}</p>
+            </div>
+        `;
+    }
+}
+
+// ==========================================
+// ACCESS CONTROL & SESSION TIME LOCKOUT
+// ==========================================
 function openStaffModal() {
     document.getElementById('staffEntranceModal').classList.remove('hidden');
 }
@@ -37,6 +255,7 @@ function closeStaffModal() {
 function saveModalSetupProfile() {
     const selectedTier = document.getElementById('modalBizTier').value;
     localStorage.setItem('so_biz_tier', selectedTier);
+    currentActivePartnerSession = selectedTier;
     
     let targetedTheme = "default";
     if (selectedTier === "Artisan") targetedTheme = "artisan";
@@ -51,6 +270,7 @@ function saveModalSetupProfile() {
     
     closeStaffModal();
     showDashboard();
+    resetSessionTimeout();
 }
 
 function triggerModalAdminAuth() {
@@ -58,12 +278,13 @@ function triggerModalAdminAuth() {
     if (enteredPin === ADMIN_SECRET_PIN) {
         closeStaffModal();
         
-        // If not loaded into a workspace yet, choose a default one to safely initialize backing views
         if (!localStorage.getItem('so_biz_tier')) {
             localStorage.setItem('so_biz_tier', 'Artisan');
         }
+        currentActivePartnerSession = localStorage.getItem('so_biz_tier');
         
         showDashboard();
+        resetSessionTimeout();
         
         const adminCard = document.getElementById('adminPanelCard');
         if (adminCard) {
@@ -76,6 +297,22 @@ function triggerModalAdminAuth() {
     }
 }
 
+function resetSessionTimeout() {
+    clearTimeout(sessionTimeoutTimer);
+    // Auto terminate active admin/partner session after 10 minutes of complete inactivity
+    sessionTimeoutTimer = setTimeout(() => {
+        executeSessionLogout();
+    }, 10 * 60 * 1000); 
+}
+
+function executeSessionLogout() {
+    clearTimeout(sessionTimeoutTimer);
+    currentActivePartnerSession = null;
+    localStorage.removeItem('so_biz_tier');
+    alert("Session expired due to inactivity. Returning safely to storefront.");
+    showPublicStorefrontLanding();
+}
+
 // --- PUBLIC LANDING STOREFRONT LOGIC ---
 function showPublicStorefrontLanding() {
     document.getElementById('workspace').classList.add('hidden');
@@ -84,6 +321,7 @@ function showPublicStorefrontLanding() {
     document.getElementById('adminPanelCard').classList.add('hidden');
     
     document.getElementById('publicStorefrontLandingView').classList.remove('hidden');
+    renderMarketplaceHome("all", "all");
     renderPublicCatalog();
 }
 
@@ -536,8 +774,8 @@ function setupMediaShowcaseBoard() {
     
     const liveUrl = stagingLocalBlobUrl || localStorage.getItem('sobiz_media_url') || DEFAULT_IMAGE_URL;
     if (liveUrl) {
-        container.innerHTML = `<img src="${liveUrl}" alt="Network Media Display">`;
-        fab.classList.remove('hidden'); 
+        if (container) container.innerHTML = `<img src="${liveUrl}" alt="Network Media Display">`;
+        if (fab) fab.classList.remove('hidden'); 
     }
 }
 
@@ -606,6 +844,7 @@ function updateAdminMetrics() {
 
 function triggerRemoteDataSync() {
     const statusBox = document.getElementById('adminSyncStatus');
+    if (!statusBox) return;
     statusBox.style.color = "#ea580c"; statusBox.innerText = "Syncing...";
     setTimeout(() => { statusBox.style.color = "#16a34a"; statusBox.innerText = "Standby"; }, 1000);
 }
@@ -613,17 +852,3 @@ function triggerRemoteDataSync() {
 function purgeSystemData() {
     if (confirm("Purge databases?")) { localStorage.clear(); window.location.reload(); }
 }
-
-// Initialization Entry Points
-window.addEventListener('DOMContentLoaded', () => {
-    // If a theme choice was previously cached, apply it gracefully
-    const cachedTheme = localStorage.getItem('sobiz_theme_choice');
-    if (cachedTheme) {
-        const themeSelector = document.getElementById('uiTheme');
-        if (themeSelector) themeSelector.value = cachedTheme;
-        changeWorkspaceTheme();
-    }
-    
-    // Launch directly to the customer-facing landing catalog page
-    showPublicStorefrontLanding();
-});
